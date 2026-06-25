@@ -1,0 +1,21 @@
+{
+  "main": [
+    { "id": "anchor-filosofie", "type": "anchor", "label": "Vakmanschap", "url": "/#filosofie", "visible": true },
+    { "id": "anchor-ruimtes", "type": "anchor", "label": "Collectie", "url": "/#ruimtes", "visible": true },
+    { "id": "anchor-faciliteiten", "type": "anchor", "label": "Materialen", "url": "/#faciliteiten", "visible": true },
+    { "id": "anchor-verblijf", "type": "anchor", "label": "Montage", "url": "/#verblijf", "visible": true },
+    { "id": "anchor-locatie", "type": "anchor", "label": "Showroom", "url": "/#locatie", "visible": true },
+    { "id": "page-PG-MQT4AWL1-1531", "type": "page", "pageId": "PG-MQT4AWL1-1531", "label": "Contact", "url": "/p/contact", "visible": true }
+  ],
+  "footer": [
+    { "id": "f-taats", "type": "anchor", "label": "Taatsdeuren", "url": "/#ruimtes", "group": "Collectie", "visible": true },
+    { "id": "f-schuif", "type": "anchor", "label": "Schuifdeuren", "url": "/#ruimtes", "group": "Collectie", "visible": true },
+    { "id": "f-mat", "type": "anchor", "label": "Materialen", "url": "/#faciliteiten", "group": "Collectie", "visible": true },
+    { "id": "f-mont", "type": "anchor", "label": "Montage", "url": "/#verblijf", "group": "Collectie", "visible": true },
+    { "id": "f-show", "type": "anchor", "label": "Showroom", "url": "/#locatie", "group": "Service", "visible": true },
+    { "id": "f-inmeten", "type": "anchor", "label": "Thuis inmeten", "url": "/#verblijf", "group": "Service", "visible": true },
+    { "id": "f-offerte", "type": "anchor", "label": "Offerte aanvragen", "url": "/#boeken", "group": "Service", "visible": true },
+    { "id": "f-garantie", "type": "anchor", "label": "Garantie", "url": "/#faciliteiten", "group": "Service", "visible": true }
+  ],
+  "updatedAt": "2026-06-25T12:00:00.000Z"
+}

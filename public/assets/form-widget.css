@@ -1,0 +1,130 @@
+/** Stijlen voor de formulierbuilder-widget (tokens uit site-base.css). */
+.dm-form-card {
+    max-width: 640px;
+    margin: 0 auto;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--line);
+}
+.dm-form-body { padding: 2rem; }
+.dm-form-heading {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 28px;
+    margin: 0 0 1.25rem;
+    font-weight: 400;
+}
+.dm-form-heading em { font-style: italic; color: var(--copper); }
+.dm-form-paragraph {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin: -0.5rem 0 1.25rem;
+}
+.dm-form-field { margin-bottom: 1rem; }
+.dm-form-field label.dm-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.4rem;
+    display: block;
+}
+.dm-form-field label.dm-label .req { color: var(--copper); margin-left: 0.2em; }
+.dm-form-field input,
+.dm-form-field select,
+.dm-form-field textarea {
+    width: 100%;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+}
+.dm-form-field textarea { min-height: 120px; resize: vertical; }
+.dm-form-field input:focus,
+.dm-form-field select:focus,
+.dm-form-field textarea:focus {
+    outline: none;
+    border-color: var(--copper);
+    box-shadow: 0 0 0 2px rgba(166, 124, 82, 0.15);
+}
+.dm-form-field.has-error input,
+.dm-form-field.has-error select,
+.dm-form-field.has-error textarea { border-color: #c44; }
+.dm-field-error { font-size: 12px; color: #b33; margin-top: 0.35rem; }
+.dm-radio-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.dm-radio-opt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid var(--line);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    font-size: 14px;
+}
+.dm-radio-opt:has(input:checked) {
+    border-color: var(--copper);
+    background: rgba(166, 124, 82, 0.06);
+}
+.dm-radio-opt input { width: auto; accent-color: var(--copper); }
+.dm-checkbox-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: 14px;
+    line-height: 1.45;
+}
+.dm-checkbox-wrap input { width: auto; margin-top: 0.2rem; accent-color: var(--copper); flex-shrink: 0; }
+.dm-form-actions { margin-top: 1.5rem; }
+.dm-form-submit {
+    width: 100%;
+    padding: 0.85rem 1.5rem;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    min-height: 44px;
+    background: var(--copper);
+    color: var(--paper);
+}
+.dm-form-submit:hover { background: var(--copper-hot); }
+.dm-form-submit:disabled { opacity: 0.6; cursor: default; }
+.dm-form-success {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+.dm-form-success .check {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--sage);
+    color: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin: 0 auto 1rem;
+}
+.dm-form-success h3 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 24px;
+    margin: 0 0 0.5rem;
+    font-weight: 400;
+}
+.dm-form-success p { font-size: 14px; color: var(--ink-soft); margin: 0; }
+.dm-form-loading { text-align: center; padding: 2rem; color: var(--ink-soft); font-size: 14px; }
+.dm-form-page .dm-form-card { margin-top: 0; }
+@media (max-width: 768px) {
+    .dm-form-body { padding: 1.25rem; }
+    .dm-form-heading { font-size: 24px; }
+}

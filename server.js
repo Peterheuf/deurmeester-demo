@@ -22,6 +22,7 @@ const elements = require('./lib/elements');
 const agentActions = require('./lib/agent-actions');
 const agentImages = require('./lib/agent-images');
 const mediaLibrary = require('./lib/media-library');
+const formsLib = require('./lib/forms');
 
 // Bij Netlify Functions wordt server.js in de function-bundle geplaatst; paden
 // wijzen dan naar netlify/functions/ i.p.v. de projectroot.
@@ -58,6 +59,8 @@ const TEMPLATES_FILE = path.join(DATA_DIR, 'email-templates.json');
 const OUTBOX_FILE = path.join(DATA_DIR, 'outbox.json');
 const STYLEGUIDE_FILE = path.join(DATA_DIR, 'styleguide.json');
 const PAGES_FILE = path.join(DATA_DIR, 'pages.json');
+const FORMS_FILE = path.join(DATA_DIR, 'forms.json');
+const MENU_FILE = path.join(DATA_DIR, 'menu.json');
 const UPLOAD_DIR = IS_SERVERLESS
     ? path.join('/tmp', 'deurmeester-uploads')
     : path.join(ROOT, 'public', 'uploads');
@@ -338,6 +341,29 @@ function defaultStyleguide() {
     };
 }
 
+function defaultMenuConfig() {
+    return {
+        main: [
+            { id: 'anchor-filosofie', type: 'anchor', label: 'Vakmanschap', url: '/#filosofie', visible: true },
+            { id: 'anchor-ruimtes', type: 'anchor', label: 'Collectie', url: '/#ruimtes', visible: true },
+            { id: 'anchor-faciliteiten', type: 'anchor', label: 'Materialen', url: '/#faciliteiten', visible: true },
+            { id: 'anchor-verblijf', type: 'anchor', label: 'Montage', url: '/#verblijf', visible: true },
+            { id: 'anchor-locatie', type: 'anchor', label: 'Showroom', url: '/#locatie', visible: true }
+        ],
+        footer: [
+            { id: 'f-taats', type: 'anchor', label: 'Taatsdeuren', url: '/#ruimtes', group: 'Collectie', visible: true },
+            { id: 'f-schuif', type: 'anchor', label: 'Schuifdeuren', url: '/#ruimtes', group: 'Collectie', visible: true },
+            { id: 'f-mat', type: 'anchor', label: 'Materialen', url: '/#faciliteiten', group: 'Collectie', visible: true },
+            { id: 'f-mont', type: 'anchor', label: 'Montage', url: '/#verblijf', group: 'Collectie', visible: true },
+            { id: 'f-show', type: 'anchor', label: 'Showroom', url: '/#locatie', group: 'Service', visible: true },
+            { id: 'f-inmeten', type: 'anchor', label: 'Thuis inmeten', url: '/#verblijf', group: 'Service', visible: true },
+            { id: 'f-offerte', type: 'anchor', label: 'Offerte aanvragen', url: '/#boeken', group: 'Service', visible: true },
+            { id: 'f-garantie', type: 'anchor', label: 'Garantie', url: '/#faciliteiten', group: 'Service', visible: true }
+        ],
+        updatedAt: null
+    };
+}
+
 if (!fs.existsSync(CONTENT_FILE)) writeJSON(CONTENT_FILE, defaultContent());
 if (!fs.existsSync(BOOKINGS_FILE)) writeJSON(BOOKINGS_FILE, []);
 if (!fs.existsSync(SETTINGS_FILE)) writeJSON(SETTINGS_FILE, defaultSettings());
@@ -345,6 +371,8 @@ if (!fs.existsSync(TEMPLATES_FILE)) writeJSON(TEMPLATES_FILE, defaultEmailTempla
 if (!fs.existsSync(OUTBOX_FILE)) writeJSON(OUTBOX_FILE, []);
 if (!fs.existsSync(STYLEGUIDE_FILE)) writeJSON(STYLEGUIDE_FILE, defaultStyleguide());
 if (!fs.existsSync(PAGES_FILE)) writeJSON(PAGES_FILE, []);
+if (!fs.existsSync(FORMS_FILE)) writeJSON(FORMS_FILE, formsLib.defaultForms());
+if (!fs.existsSync(MENU_FILE)) writeJSON(MENU_FILE, defaultMenuConfig());
 
 // Sjabloon renderen: vervang {{var}} door waarden (onbekende vars → leeg)
 function renderTemplate(str, vars) {
@@ -480,10 +508,28 @@ app.get('/api/site-config', (req, res) => {
     res.json(readSiteConfig());
 });
 
-// Publiek menu: gepubliceerde pagina's die in het hoofdmenu horen.
-// De homepage injecteert deze items client-side in de navigatie.
+// Publiek menu: zichtbare items uit menu.json (anchors + pagina's), in volgorde.
 app.get('/api/menu', (req, res) => {
     res.json(menuItems());
+});
+
+// Volledige menu-configuratie voor de admin (hoofdmenu + footer).
+app.get('/api/menu/config', requireAuth, (req, res) => {
+    const pages = readJSON(PAGES_FILE, []);
+    res.json({
+        menu: readMenuConfig(),
+        pages: pages.filter(p => p.status === 'gepubliceerd')
+    });
+});
+
+app.put('/api/menu', requireAuth, (req, res) => {
+    const b = req.body || {};
+    const main = normalizeMenuItems(b.main);
+    const footer = normalizeMenuItems(b.footer);
+    const cfg = { main, footer, updatedAt: new Date().toISOString() };
+    writeJSON(MENU_FILE, cfg);
+    syncPagesFromMenu(main, footer);
+    res.json({ ok: true, menu: cfg, items: menuItems() });
 });
 
 // Publieke (read-only) blokken-catalogus: metadata + html van de herbruikbare
@@ -973,15 +1019,112 @@ function stripBuilderArtifacts(html) {
     return s;
 }
 
-// Menu-items: gepubliceerde pagina's met inMenu=true, in opslagvolgorde.
-function menuItems() {
+function normalizeMenuItems(items) {
+    if (!Array.isArray(items)) return [];
+    return items.map((it, idx) => {
+        const raw = it || {};
+        const type = raw.type === 'page' ? 'page' : 'anchor';
+        const out = {
+            id: String(raw.id || ('menu-' + idx + '-' + Date.now().toString(36))).slice(0, 80),
+            type,
+            label: String(raw.label || '').trim().slice(0, 60),
+            visible: raw.visible !== false
+        };
+        if (type === 'page') {
+            out.pageId = String(raw.pageId || '').trim();
+            out.url = String(raw.url || '').trim();
+        } else {
+            out.url = String(raw.url || '').trim().slice(0, 200);
+        }
+        if (raw.group) out.group = String(raw.group).trim().slice(0, 40);
+        return out;
+    }).filter(it => it.label && (it.type === 'anchor' ? it.url : it.pageId || it.url));
+}
+
+function buildMenuFromPages() {
+    const cfg = defaultMenuConfig();
     const pages = readJSON(PAGES_FILE, []);
-    return pages
+    pages
         .filter(p => p.status === 'gepubliceerd' && p.inMenu)
-        .map(p => ({
-            label: (p.menuLabel && String(p.menuLabel).trim()) || p.title,
-            url: '/p/' + p.slug
-        }));
+        .sort((a, b) => (a.menuOrder || 0) - (b.menuOrder || 0))
+        .forEach(p => {
+            cfg.main.push({
+                id: 'page-' + p.id,
+                type: 'page',
+                pageId: p.id,
+                label: (p.menuLabel && String(p.menuLabel).trim()) || p.title,
+                url: '/p/' + p.slug,
+                visible: true
+            });
+        });
+    return cfg;
+}
+
+function readMenuConfig() {
+    const cfg = readJSON(MENU_FILE, null);
+    if (cfg && Array.isArray(cfg.main)) return cfg;
+    return buildMenuFromPages();
+}
+
+function resolveMenuItem(it, pages) {
+    if (!it || it.visible === false) return null;
+    if (it.type === 'page') {
+        const p = pages.find(x => x.id === it.pageId);
+        if (!p || p.status !== 'gepubliceerd') return null;
+        return {
+            label: (it.label && String(it.label).trim()) || p.menuLabel || p.title,
+            url: '/p/' + p.slug,
+            slug: p.slug,
+            pageId: p.id
+        };
+    }
+    if (it.url) {
+        return { label: it.label, url: it.url };
+    }
+    return null;
+}
+
+function menuItems(section) {
+    const sec = section || 'main';
+    const cfg = readMenuConfig();
+    const pages = readJSON(PAGES_FILE, []);
+    const list = Array.isArray(cfg[sec]) ? cfg[sec] : [];
+    return list.map(it => resolveMenuItem(it, pages)).filter(Boolean);
+}
+
+function syncPagesFromMenu(main, footer) {
+    const pages = readJSON(PAGES_FILE, []);
+    const allItems = [...(main || []), ...(footer || [])].filter(it => it && it.type === 'page');
+    const inMenuIds = new Set(
+        (main || []).filter(it => it && it.type === 'page' && it.visible !== false).map(it => it.pageId)
+    );
+    pages.forEach(p => {
+        const mainItem = (main || []).find(it => it && it.type === 'page' && it.pageId === p.id);
+        const footerItem = (footer || []).find(it => it && it.type === 'page' && it.pageId === p.id);
+        const item = mainItem || footerItem;
+        if (item) {
+            p.inMenu = inMenuIds.has(p.id);
+            if (item.label) p.menuLabel = String(item.label).slice(0, 60);
+            if (mainItem) p.menuOrder = main.indexOf(mainItem);
+        } else if (allItems.every(it => it.pageId !== p.id)) {
+            // Pagina niet meer in menu-config: inMenu uit
+            const wasInMenu = p.inMenu;
+            if (wasInMenu && !inMenuIds.has(p.id)) p.inMenu = false;
+        }
+    });
+    writeJSON(PAGES_FILE, pages);
+}
+
+function renderNavLinksHtml(items) {
+    return (items || [])
+        .map(it => {
+            const slug = String(it.url || '').split(/[?#]/)[0].split('/').filter(Boolean).pop() || '';
+            const cls = slug && String(it.url || '').indexOf('/p/') === 0
+                ? ' class="il-menu-link" data-slug="' + escapeHtml(slug) + '"'
+                : '';
+            return '<a' + cls + ' href="' + escapeHtml(it.url) + '">' + escapeHtml(it.label) + '</a>';
+        })
+        .join('');
 }
 
 app.get('/api/pages', requireAuth, (req, res) => {
@@ -1048,6 +1191,187 @@ app.delete('/api/pages/:id', requireAuth, (req, res) => {
     res.json({ ok: true });
 });
 
+// --------------------------- Formulieren (CRUD + inzendingen) ---------------------------
+
+const formSubmitRate = new Map();
+const FORM_SUBMIT_MAX = 8;
+const FORM_SUBMIT_WINDOW_MS = 60000;
+
+function formSubmitRateOk(ip) {
+    const key = String(ip || 'unknown').slice(0, 64);
+    const now = Date.now();
+    let entry = formSubmitRate.get(key);
+    if (!entry || now - entry.start > FORM_SUBMIT_WINDOW_MS) {
+        entry = { start: now, count: 0 };
+    }
+    entry.count++;
+    formSubmitRate.set(key, entry);
+    return entry.count <= FORM_SUBMIT_MAX;
+}
+
+function readForms() {
+    return readJSON(FORMS_FILE, formsLib.defaultForms());
+}
+
+function writeForms(forms) {
+    writeJSON(FORMS_FILE, forms);
+}
+
+function findPublishedFormBySlug(slug) {
+    return readForms().find(f => f.slug === slug && f.status === 'gepubliceerd') || null;
+}
+
+async function sendFormNotification(form, submission) {
+    try {
+        const settings = readJSON(SETTINGS_FILE, defaultSettings());
+        const to = (form.notifyEmail || settings.meldingsEmail || settings.contactEmail || '').trim();
+        if (!to) return;
+        const rows = (form.fields || [])
+            .filter(f => formsLib.INPUT_TYPES.includes(f.type))
+            .map(f => '<p style="margin:4px 0"><strong>' + formsLib.escapeHtml(f.label) + ':</strong> ' +
+                formsLib.escapeHtml(submission.data[f.id] || '') + '</p>')
+            .join('');
+        const html =
+            '<div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;background:#faf8f5;color:#1e1e1e;border:1px solid #e5ddd2;border-radius:10px;padding:24px">' +
+            '<h2 style="margin:0 0 12px;font-size:20px">Nieuwe inzending: ' + formsLib.escapeHtml(form.name) + '</h2>' +
+            rows +
+            '<p style="margin:16px 0 0;font-size:12px;color:#7a7168">Referentie: ' + formsLib.escapeHtml(submission.id) + '</p></div>';
+        await sendMail({
+            to: to,
+            subject: 'Nieuwe inzending: ' + form.name,
+            html: html,
+            trigger: 'form_submission'
+        });
+    } catch (e) {
+        console.error('sendFormNotification fout:', e.message);
+    }
+}
+
+// Admin: alle formulieren
+app.get('/api/forms', requireAuth, (req, res) => {
+    const forms = readForms().map(f => ({
+        id: f.id,
+        name: f.name,
+        slug: f.slug,
+        status: f.status,
+        submitLabel: f.submitLabel,
+        successMessage: f.successMessage,
+        notifyEmail: f.notifyEmail,
+        fieldCount: (f.fields || []).length,
+        submissionCount: (f.submissions || []).length,
+        createdAt: f.createdAt,
+        updatedAt: f.updatedAt
+    }));
+    res.json(forms);
+});
+
+// Publiek: formulierdefinitie voor widget (alleen gepubliceerd) — vóór /:id
+app.get('/api/forms/public/:slug', (req, res) => {
+    const slug = slugify(req.params.slug);
+    const form = findPublishedFormBySlug(slug);
+    if (!form) return res.status(404).json({ error: 'Formulier niet gevonden' });
+    res.json(formsLib.publicFormMeta(form));
+});
+
+app.get('/api/forms/:id', requireAuth, (req, res) => {
+    const forms = readForms();
+    const form = forms.find(f => f.id === req.params.id);
+    if (!form) return res.status(404).json({ error: 'Niet gevonden' });
+    res.json(form);
+});
+
+app.post('/api/forms', requireAuth, (req, res) => {
+    const forms = readForms();
+    const norm = formsLib.normalizeForm(req.body, forms, null);
+    if (norm.error) return res.status(400).json({ error: norm.error });
+    const now = new Date().toISOString();
+    const form = Object.assign({
+        id: formsLib.newFormId(),
+        submissions: [],
+        createdAt: now,
+        updatedAt: now
+    }, norm);
+    forms.unshift(form);
+    writeForms(forms);
+    res.status(201).json({ ok: true, form });
+});
+
+app.put('/api/forms/:id', requireAuth, (req, res) => {
+    const forms = readForms();
+    const idx = forms.findIndex(f => f.id === req.params.id);
+    if (idx === -1) return res.status(404).json({ error: 'Niet gevonden' });
+    const norm = formsLib.normalizeForm(req.body, forms, forms[idx]);
+    if (norm.error) return res.status(400).json({ error: norm.error });
+    const cur = forms[idx];
+    Object.assign(cur, norm, { updatedAt: new Date().toISOString() });
+    if (!Array.isArray(cur.submissions)) cur.submissions = [];
+    forms[idx] = cur;
+    writeForms(forms);
+    res.json({ ok: true, form: cur });
+});
+
+app.delete('/api/forms/:id', requireAuth, (req, res) => {
+    let forms = readForms();
+    const before = forms.length;
+    forms = forms.filter(f => f.id !== req.params.id);
+    if (forms.length === before) return res.status(404).json({ error: 'Niet gevonden' });
+    writeForms(forms);
+    res.json({ ok: true });
+});
+
+// Publiek: inzending versturen
+app.post('/api/forms/:slug/submit', async (req, res) => {
+    const ip = req.ip || req.headers['x-forwarded-for'] || '';
+    if (!formSubmitRateOk(ip)) {
+        return res.status(429).json({ error: 'Te veel verzoeken. Probeer het over een minuut opnieuw.' });
+    }
+    const slug = slugify(req.params.slug);
+    const forms = readForms();
+    const idx = forms.findIndex(f => f.slug === slug && f.status === 'gepubliceerd');
+    if (idx === -1) return res.status(404).json({ error: 'Formulier niet gevonden' });
+    const form = forms[idx];
+    const body = req.body || {};
+    const { errors, values, ok } = formsLib.validateSubmission(form, body);
+    if (!ok) return res.status(400).json({ error: 'Validatiefout', errors });
+    const submission = {
+        id: 'FS-' + Date.now().toString(36).toUpperCase(),
+        createdAt: new Date().toISOString(),
+        data: values,
+        ip: String(ip).slice(0, 64)
+    };
+    if (!Array.isArray(form.submissions)) form.submissions = [];
+    form.submissions.unshift(submission);
+    forms[idx] = form;
+    writeForms(forms);
+    sendFormNotification(form, submission);
+    res.status(201).json({ ok: true, id: submission.id, message: form.successMessage || 'Bedankt!' });
+});
+
+// Admin: inzendingen exporteren als CSV
+app.get('/api/forms/:id/submissions/export.csv', requireAuth, (req, res) => {
+    const forms = readForms();
+    const form = forms.find(f => f.id === req.params.id);
+    if (!form) return res.status(404).json({ error: 'Niet gevonden' });
+    const subs = form.submissions || [];
+    const inputFields = (form.fields || []).filter(f => formsLib.INPUT_TYPES.includes(f.type));
+    const cols = ['id', 'createdAt'].concat(inputFields.map(f => f.id));
+    const headers = ['Referentie', 'Datum'].concat(inputFields.map(f => f.label));
+    const esc = (v) => {
+        let s = v == null ? '' : String(v);
+        if (/[",\n;]/.test(s)) s = '"' + s.replace(/"/g, '""') + '"';
+        return s;
+    };
+    const lines = [headers.join(',')];
+    subs.forEach(s => {
+        const row = [s.id, s.createdAt].concat(inputFields.map(f => (s.data && s.data[f.id]) || ''));
+        lines.push(row.map(esc).join(','));
+    });
+    const csv = '\uFEFF' + lines.join('\r\n');
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="formulier-' + form.slug + '-' + new Date().toISOString().slice(0, 10) + '.csv"');
+    res.send(csv);
+});
+
 // --------------------------- AI-agent (Kimi) ---------------------------
 
 // Een door de client meegestuurde lijst van gekozen blokken normaliseren naar
@@ -1072,16 +1396,16 @@ function normalizeWireframeIds(input) {
         .filter(id => !!wireframes.getWireframe(id));
 }
 
-// 1-2 voorbeeld-sectiesnippets uit de echte site, voor in de prompt
+// Voorbeeld-sectiesnippets uit de echte site (homepage-patronen), voor in de prompt
 function exampleSnippets() {
+    const fromDesign = pageDesign.getSectionSnippets();
+    if (fromDesign && fromDesign.length) return fromDesign;
     return [
-        '<section class="section">\n' +
+        '<section class="page-hero">\n' +
         '  <div class="container">\n' +
-        '    <div class="section-head">\n' +
-        '      <span class="eyebrow">Vakmanschap</span>\n' +
-        '      <h2>Deuren die <em>passen</em></h2>\n' +
-        '    </div>\n' +
-        '    <blockquote class="quote">Elke deur wordt op maat gemaakt en met zorg gemonteerd, zodat hij naadloos in je interieur past.</blockquote>\n' +
+        '    <span class="eyebrow">Vakmanschap</span>\n' +
+        '    <h1>Deuren die <em>passen</em></h1>\n' +
+        '    <p class="page-hero-sub">Korte intro van een of twee zinnen.</p>\n' +
         '  </div>\n' +
         '</section>',
         '<section class="section section-warm">\n' +
@@ -1090,7 +1414,7 @@ function exampleSnippets() {
         '      <article class="card">\n' +
         '        <h3>Taats<em>deuren</em></h3>\n' +
         '        <span class="script">stijlvol, ruimtelijk</span>\n' +
-        '        <p>Moderne taatsdeuren in massief hout of fineer, afgestemd op je woning.</p>\n' +
+        '        <p>Moderne taatsdeuren in massief hout of fineer.</p>\n' +
         '        <a href="/#boeken" class="btn-link">Vraag een offerte aan</a>\n' +
         '      </article>\n' +
         '    </div>\n' +
@@ -1143,7 +1467,7 @@ function buildGenerationPromptFromPlan(plan) {
 
     const design = pageDesign.normalizeDesign(plan.design);
     parts.push('');
-    parts.push('Designkeuzes (strikt toepassen):');
+    parts.push('Huisstijl-opbouw (strikt — alleen styleguide-componenten, geen custom CSS):');
     pageDesign.designSummaryForDisplay(design).forEach(row => {
         parts.push('- ' + row.label + ': ' + row.value);
     });
@@ -1153,10 +1477,11 @@ function buildGenerationPromptFromPlan(plan) {
     const secties = Array.isArray(plan.secties) ? plan.secties : (Array.isArray(plan.sections) ? plan.sections : []);
     if (secties.length) {
         parts.push('');
-        parts.push('Secties in volgorde:');
+        parts.push('Secties in volgorde (inhoud invullen in bijbehorend sectietype):');
         secties.forEach((s, i) => {
             if (s && typeof s === 'object') {
-                parts.push('  ' + (i + 1) + '. ' + (s.headline || s.title || '') + (s.preview ? ' — ' + s.preview : ''));
+                const type = s.type ? ' [' + s.type + ']' : '';
+                parts.push('  ' + (i + 1) + '. ' + (s.headline || s.title || '') + type + (s.preview ? ' — ' + s.preview : ''));
             } else {
                 parts.push('  ' + (i + 1) + '. ' + String(s));
             }
@@ -1165,15 +1490,19 @@ function buildGenerationPromptFromPlan(plan) {
     const beelden = Array.isArray(plan.beelden) ? plan.beelden : (Array.isArray(plan.images) ? plan.images : []);
     if (beelden.length) {
         parts.push('');
-        parts.push('Afbeeldingen (gebruik exact deze URL\'s in img-tags):');
+        parts.push('Afbeeldingen uit mediabibliotheek (gebruik EXACT deze URL\'s in img-tags, geen placeholders):');
         beelden.forEach((img, i) => {
             const label = (img && img.label) || 'Afbeelding';
             const url = (img && img.url) || '';
             parts.push('  ' + (i + 1) + '. ' + label + ': ' + url);
         });
     }
+    if (design.heroBeeld) {
+        parts.push('');
+        parts.push('Hero-/hoofdbeeld URL: ' + design.heroBeeld);
+    }
     parts.push('');
-    parts.push('Bouw een complete body-HTML in de DeurMeester huisstijl. Pas ALLE design-keuzes toe zodat de pagina uniek oogt.');
+    parts.push('Bouw complete body-HTML in DeurMeester huisstijl. Gebruik ALLEEN componenten uit de snippets. Geen inline kleuren, geen <style>-blokken.');
     return parts.join('\n');
 }
 
@@ -1185,7 +1514,7 @@ function normalizePlanForBuild(plan) {
     normalized.design = pageDesign.normalizeDesign(normalized.design);
     if (!normalized.generationPrompt || !String(normalized.generationPrompt).trim()) {
         normalized.generationPrompt = buildGenerationPromptFromPlan(normalized);
-    } else if (!String(normalized.generationPrompt).includes('PAGINA-DESIGN')) {
+    } else if (!String(normalized.generationPrompt).includes('HUISSTIJL-OPBOUW')) {
         normalized.generationPrompt = String(normalized.generationPrompt).trim() + '\n\n' + pageDesign.getDesignPromptBlock(normalized.design);
     }
     return normalized;
@@ -1383,19 +1712,11 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;');
 }
 
-// De site-nav, identiek aan index.html (links wijzen naar de homepage-secties).
-// De dynamische menu-items (gepubliceerde pagina's met inMenu) komen achter de
-// vaste links en vóór de "Boek nu"-cta.
+// De site-nav uit menu.json (desktop + mobiel).
 function siteNavHtml() {
-    // Menu-links krijgen class il-menu-link + data-slug zodat de scanner ze een
-    // stabiele sleutel (menu.<slug>) geeft die overal (homepage + losse pagina's)
-    // matcht. De link zelf blijft /p/<slug>.
-    const menuHtml = menuItems()
-        .map(it => {
-            const slug = String(it.url || '').split(/[?#]/)[0].split('/').filter(Boolean).pop() || '';
-            return '<a class="il-menu-link" data-slug="' + escapeHtml(slug) + '" href="' + escapeHtml(it.url) + '">' + escapeHtml(it.label) + '</a>';
-        })
-        .join('');
+    const items = menuItems('main');
+    const menuHtml = renderNavLinksHtml(items);
+    const mobileMenuHtml = renderNavLinksHtml(items);
     return '' +
     '<div class="topstrip">' +
         '<div class="topstrip-left">' +
@@ -1411,11 +1732,6 @@ function siteNavHtml() {
     '<nav class="global" id="global-nav">' +
         '<a href="/" class="nav-logo"><img src="/images/logo.png" alt="DeurMeester logo"/> DeurMeester</a>' +
         '<div class="nav-links">' +
-            '<a href="/#filosofie">Vakmanschap</a>' +
-            '<a href="/#ruimtes">Collectie</a>' +
-            '<a href="/#faciliteiten">Materialen</a>' +
-            '<a href="/#verblijf">Montage</a>' +
-            '<a href="/#locatie">Showroom</a>' +
             menuHtml +
         '</div>' +
         '<a href="/#boeken" class="nav-cta">Offerte</a>' +
@@ -1426,11 +1742,7 @@ function siteNavHtml() {
     '<div class="mobile-nav" id="mobile-nav" aria-hidden="true">' +
         '<div class="mobile-nav-panel">' +
             '<div class="mobile-nav-links">' +
-                '<a href="/#filosofie">Vakmanschap</a>' +
-                '<a href="/#ruimtes">Collectie</a>' +
-                '<a href="/#faciliteiten">Materialen</a>' +
-                '<a href="/#verblijf">Montage</a>' +
-                '<a href="/#locatie">Showroom</a>' +
+                mobileMenuHtml +
                 '<a href="/#boeken" class="mobile-nav-cta">Offerte aanvragen</a>' +
             '</div>' +
         '</div>' +
@@ -1501,6 +1813,8 @@ function renderPageSkeleton(opts) {
         '<script src="/assets/il-apply.js"></script>\n' +
         '<link rel="stylesheet" href="/assets/booking-widget.css"/>\n' +
         '<script src="/assets/booking-widget.js"></script>\n' +
+        '<link rel="stylesheet" href="/assets/form-widget.css"/>\n' +
+        '<script src="/assets/form-widget.js"></script>\n' +
         '<script src="/assets/elements-init.js"></script>\n';
     let editHead = '';
     let editBody = '';
@@ -1535,6 +1849,25 @@ function renderPageSkeleton(opts) {
         '</body>\n</html>';
 }
 
+// Publieke route: gepubliceerd formulier op /f/:slug
+app.get('/f/:slug', (req, res) => {
+    const slug = slugify(req.params.slug);
+    const form = findPublishedFormBySlug(slug);
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    if (!form) {
+        const body = '<section class="page-status">' +
+            '<span class="eyebrow">Formulier niet gevonden</span>' +
+            '<h1>404</h1>' +
+            '<p>Dit formulier bestaat niet of is nog niet gepubliceerd.</p>' +
+            '<a href="/" class="cta">Naar de homepage</a></section>';
+        return res.status(404).send(renderPageSkeleton({ title: 'Niet gevonden', body }));
+    }
+    res.send(renderPageSkeleton({
+        title: form.name,
+        body: formsLib.renderFormPageBody(form)
+    }));
+});
+
 // Publieke route: gepubliceerde pagina tonen op /p/:slug.
 // Ingelogde admins mogen met ?edit=1 ook concepten openen in de live builder.
 app.get('/p/:slug', (req, res) => {
@@ -1560,7 +1893,7 @@ app.get('/p/:slug', (req, res) => {
     }
     res.send(renderPageSkeleton({
         title: page.title,
-        body: page.html,
+        body: formsLib.expandFormShortcodes(page.html, readForms()),
         edit: editMode,
         page: editMode ? { id: page.id, slug: page.slug, title: page.title } : null
     }));

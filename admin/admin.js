@@ -19,10 +19,12 @@
     let templates = null;
     let currentTpl = 'booking_confirmation';
 
-    const ROUTES = ['dashboard', 'aanvragen', 'paginas', 'agent', 'website', 'media', 'emails', 'huisstijl', 'instellingen'];
+    const ROUTES = ['dashboard', 'aanvragen', 'paginas', 'menu', 'formulieren', 'agent', 'website', 'media', 'emails', 'huisstijl', 'instellingen'];
     const ROUTE_ALIASES = { boekingen: 'aanvragen', bouwer: 'agent' };
 
     let pages = [];
+    let menuConfig = { main: [], footer: [] };
+    let publishedPages = [];
     let styleguide = null;
     let aiConfigured = false;
     let editingPageId = null;
@@ -175,6 +177,8 @@
         if (r === 'dashboard') renderDashboard();
         if (r === 'aanvragen') renderAanvragen();
         if (r === 'paginas') loadPages();
+        if (r === 'menu') loadMenuBuilder();
+        if (r === 'formulieren' && window.FormBuilder) window.FormBuilder.onRouteEnter();
         if (r === 'agent') loadAgent();
         if (r === 'media') loadMedia();
         if (r === 'emails') { loadOutbox(); loadTemplates(); }
@@ -785,6 +789,8 @@
                 '<div class="page-actions">' +
                     (pub ? '<a class="mini-btn" href="/p/' + encodeURIComponent(p.slug) + '" target="_blank">Bekijken</a>' : '') +
                     '<a class="mini-btn" href="/p/' + encodeURIComponent(p.slug) + '?edit=1" target="_blank">Live builder</a>' +
+                    (p.inMenu ? '<span class="page-menu-badge">In menu</span>' : '') +
+                    '<button class="mini-btn" data-act="menu">' + (p.inMenu ? 'Menu bewerken' : 'Aan menu toevoegen') + '</button>' +
                     '<button class="mini-btn" data-act="assist">Pas aan via Assistent</button>' +
                     '<button class="mini-btn" data-act="toggle">' + (pub ? 'Depubliceren' : 'Publiceren') + '</button>' +
                     '<button class="mini-btn danger" data-act="delete">Verwijderen</button>' +
@@ -801,6 +807,7 @@
         const page = pages.find(p => p.id === id);
         if (!page) return;
         if (btn.dataset.act === 'assist') { openAgentForPage(page); return; }
+        if (btn.dataset.act === 'menu') { openMenuForPage(page); return; }
         if (btn.dataset.act === 'edit') { openPageModal(page); return; }
         if (btn.dataset.act === 'toggle') {
             const status = page.status === 'gepubliceerd' ? 'concept' : 'gepubliceerd';
@@ -875,6 +882,280 @@
             else { const d = await r.json().catch(() => ({})); showToast(d.error || 'Opslaan mislukt', 'error'); }
         } catch (e) { showToast('Opslaan mislukt', 'error'); }
     });
+
+    function openMenuForPage(page) {
+        if (!page) return;
+        location.hash = '#menu';
+        loadMenuBuilder().then(() => {
+            if (page.status !== 'gepubliceerd') {
+                showToast('Publiceer de pagina eerst om hem in het menu te tonen', 'error');
+                return;
+            }
+            const exists = menuConfig.main.some(it => it.type === 'page' && it.pageId === page.id);
+            if (!exists) {
+                menuConfig.main.push({
+                    id: 'page-' + page.id,
+                    type: 'page',
+                    pageId: page.id,
+                    label: page.menuLabel || page.title,
+                    url: '/p/' + page.slug,
+                    visible: true
+                });
+            }
+            renderMenuBuilder();
+            showToast('Pagina toegevoegd aan menu — vergeet niet op te slaan');
+        });
+    }
+
+    // ------------------------------------------------------------------ Menu builder
+    const HOMEPAGE_ANCHORS = [
+        { label: 'Vakmanschap', url: '/#filosofie' },
+        { label: 'Collectie', url: '/#ruimtes' },
+        { label: 'Materialen', url: '/#faciliteiten' },
+        { label: 'Montage', url: '/#verblijf' },
+        { label: 'Showroom', url: '/#locatie' },
+        { label: 'Offerte', url: '/#boeken' }
+    ];
+
+    async function loadMenuBuilder() {
+        try {
+            const r = await api('/api/menu/config');
+            const data = await r.json();
+            menuConfig = data.menu || { main: [], footer: [] };
+            publishedPages = data.pages || [];
+            renderMenuBuilder();
+        } catch (e) {
+            if (e.message !== 'unauth') showToast('Kon menu niet laden', 'error');
+        }
+    }
+
+    function menuItemTypeLabel(it) {
+        if (!it) return '';
+        return it.type === 'page' ? 'Pagina' : 'Homepage-link';
+    }
+
+    function pageOptionsHtml(selectedId) {
+        let html = '<option value="">— Kies pagina —</option>';
+        publishedPages.forEach(p => {
+            html += '<option value="' + escapeHtml(p.id) + '"' + (p.id === selectedId ? ' selected' : '') + '>' +
+                escapeHtml(p.title) + ' (/p/' + escapeHtml(p.slug) + ')</option>';
+        });
+        return html;
+    }
+
+    function anchorOptionsHtml(selectedUrl) {
+        let html = '<option value="">— Kies sectie —</option>';
+        HOMEPAGE_ANCHORS.forEach(a => {
+            html += '<option value="' + escapeHtml(a.url) + '"' + (a.url === selectedUrl ? ' selected' : '') + '>' +
+                escapeHtml(a.label) + '</option>';
+        });
+        return html;
+    }
+
+    function renderMenuItemCard(it, idx, section) {
+        const hidden = it.visible === false;
+        const isPage = it.type === 'page';
+        return '<div class="menu-item-card' + (hidden ? ' is-hidden' : '') + '" data-section="' + section + '" data-idx="' + idx + '" draggable="true">' +
+            '<div class="menu-item-grip" title="Sleep om te sorteren">⋮⋮</div>' +
+            '<div class="menu-item-fields">' +
+                '<div class="menu-item-type">' + menuItemTypeLabel(it) + '</div>' +
+                '<div><label class="field-label">Label</label><input class="text-input menu-label" value="' + escapeHtml(it.label || '') + '"/></div>' +
+                (isPage
+                    ? '<div><label class="field-label">Pagina</label><select class="text-input menu-page-select">' + pageOptionsHtml(it.pageId) + '</select></div>'
+                    : '<div><label class="field-label">Sectie / URL</label><select class="text-input menu-anchor-select">' + anchorOptionsHtml(it.url) + '</select></div>') +
+                '<div class="full"><label class="switch"><input type="checkbox" class="menu-visible"' + (hidden ? '' : ' checked') + '/><span>Zichtbaar in menu</span></label></div>' +
+            '</div>' +
+            '<div class="menu-item-actions">' +
+                '<button type="button" class="menu-up" title="Omhoog"' + (idx === 0 ? ' disabled' : '') + '>↑</button>' +
+                '<button type="button" class="menu-down" title="Omlaag">↓</button>' +
+                '<button type="button" class="menu-remove danger" title="Verwijderen">×</button>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderMenuList(containerId, items, section) {
+        const el = document.getElementById(containerId);
+        if (!el) return;
+        const list = items || [];
+        if (!list.length) {
+            el.innerHTML = '<div class="empty-state">Nog geen items. Voeg een menu-item toe.</div>';
+            return;
+        }
+        el.innerHTML = list.map((it, i) => renderMenuItemCard(it, i, section)).join('');
+    }
+
+    function renderMenuPreview() {
+        const strip = document.getElementById('menuPreviewStrip');
+        if (!strip) return;
+        const visible = (menuConfig.main || []).filter(it => it.visible !== false);
+        strip.innerHTML = '<span class="menu-preview-logo">DeurMeester</span>' +
+            visible.map(it => '<a href="#">' + escapeHtml(it.label || 'Link') + '</a>').join('') +
+            '<span class="menu-preview-cta">Offerte</span>';
+    }
+
+    function renderMenuBuilder() {
+        renderMenuList('menuMainList', menuConfig.main, 'main');
+        renderMenuList('menuFooterList', menuConfig.footer, 'footer');
+        renderMenuPreview();
+    }
+
+    function readMenuFromDom(section) {
+        const listId = section === 'footer' ? 'menuFooterList' : 'menuMainList';
+        const cards = document.querySelectorAll('#' + listId + ' .menu-item-card');
+        const items = [];
+        cards.forEach(card => {
+            const isPage = !!card.querySelector('.menu-page-select');
+            const label = (card.querySelector('.menu-label') || {}).value || '';
+            const visible = (card.querySelector('.menu-visible') || {}).checked !== false;
+            const id = 'menu-' + Date.now().toString(36) + '-' + items.length;
+            if (isPage) {
+                const pageId = (card.querySelector('.menu-page-select') || {}).value || '';
+                const pg = publishedPages.find(p => p.id === pageId);
+                items.push({
+                    id: pg ? 'page-' + pg.id : id,
+                    type: 'page',
+                    pageId,
+                    label: label.trim() || (pg && pg.title) || '',
+                    url: pg ? '/p/' + pg.slug : '',
+                    visible
+                });
+            } else {
+                const url = (card.querySelector('.menu-anchor-select') || {}).value || '';
+                const anchor = HOMEPAGE_ANCHORS.find(a => a.url === url);
+                items.push({
+                    id,
+                    type: 'anchor',
+                    label: label.trim() || (anchor && anchor.label) || '',
+                    url,
+                    visible
+                });
+            }
+        });
+        return items;
+    }
+
+    function syncMenuFromDom() {
+        menuConfig.main = readMenuFromDom('main');
+        menuConfig.footer = readMenuFromDom('footer');
+        renderMenuPreview();
+    }
+
+    function moveMenuItem(section, idx, dir) {
+        const list = section === 'footer' ? menuConfig.footer : menuConfig.main;
+        const next = idx + dir;
+        if (next < 0 || next >= list.length) return;
+        syncMenuFromDom();
+        const arr = section === 'footer' ? menuConfig.footer : menuConfig.main;
+        const tmp = arr[idx];
+        arr[idx] = arr[next];
+        arr[next] = tmp;
+        renderMenuBuilder();
+    }
+
+    function bindMenuListEvents(listId, section) {
+        const el = document.getElementById(listId);
+        if (!el || el.dataset.bound) return;
+        el.dataset.bound = '1';
+
+        el.addEventListener('click', (e) => {
+            const card = e.target.closest('.menu-item-card');
+            if (!card) return;
+            const idx = parseInt(card.dataset.idx, 10);
+            if (e.target.closest('.menu-up')) { moveMenuItem(section, idx, -1); return; }
+            if (e.target.closest('.menu-down')) { moveMenuItem(section, idx, 1); return; }
+            if (e.target.closest('.menu-remove')) {
+                syncMenuFromDom();
+                const arr = section === 'footer' ? menuConfig.footer : menuConfig.main;
+                arr.splice(idx, 1);
+                renderMenuBuilder();
+            }
+        });
+
+        el.addEventListener('change', () => syncMenuFromDom());
+        el.addEventListener('input', () => syncMenuFromDom());
+
+        let dragIdx = null;
+        el.addEventListener('dragstart', (e) => {
+            const card = e.target.closest('.menu-item-card');
+            if (!card) return;
+            dragIdx = parseInt(card.dataset.idx, 10);
+            card.classList.add('is-dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        });
+        el.addEventListener('dragend', (e) => {
+            const card = e.target.closest('.menu-item-card');
+            if (card) card.classList.remove('is-dragging');
+            dragIdx = null;
+        });
+        el.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        });
+        el.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const card = e.target.closest('.menu-item-card');
+            if (!card || dragIdx === null) return;
+            const dropIdx = parseInt(card.dataset.idx, 10);
+            if (dropIdx === dragIdx) return;
+            syncMenuFromDom();
+            const arr = section === 'footer' ? menuConfig.footer : menuConfig.main;
+            const [moved] = arr.splice(dragIdx, 1);
+            arr.splice(dropIdx, 0, moved);
+            renderMenuBuilder();
+        });
+    }
+
+    document.getElementById('menuAddMain').addEventListener('click', () => {
+        syncMenuFromDom();
+        menuConfig.main.push({
+            id: 'new-' + Date.now().toString(36),
+            type: 'anchor',
+            label: 'Nieuw item',
+            url: '/#filosofie',
+            visible: true
+        });
+        renderMenuBuilder();
+    });
+
+    document.getElementById('menuAddFooter').addEventListener('click', () => {
+        syncMenuFromDom();
+        menuConfig.footer.push({
+            id: 'new-' + Date.now().toString(36),
+            type: 'anchor',
+            label: 'Nieuwe link',
+            url: '/#ruimtes',
+            visible: true
+        });
+        renderMenuBuilder();
+    });
+
+    document.getElementById('menuSaveBtn').addEventListener('click', async () => {
+        syncMenuFromDom();
+        const status = document.getElementById('menuSaveStatus');
+        status.textContent = 'Opslaan…';
+        try {
+            const r = await api('/api/menu', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ main: menuConfig.main, footer: menuConfig.footer })
+            });
+            if (r.ok) {
+                status.textContent = 'Opgeslagen';
+                showToast('Menu opgeslagen');
+                loadPages();
+            } else {
+                const d = await r.json().catch(() => ({}));
+                status.textContent = '';
+                showToast(d.error || 'Opslaan mislukt', 'error');
+            }
+        } catch (e) {
+            status.textContent = '';
+            showToast('Opslaan mislukt', 'error');
+        }
+    });
+
+    bindMenuListEvents('menuMainList', 'main');
+    bindMenuListEvents('menuFooterList', 'footer');
 
     // ------------------------------------------------------------------ Huisstijl (stijlgids)
     async function loadStyleguide() {

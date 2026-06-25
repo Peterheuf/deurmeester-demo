@@ -346,6 +346,68 @@ a.mini-btn { text-decoration: none; display: inline-flex; align-items: center; }
 .pe-open { display: flex; flex-direction: column; }
 .pe-open a { align-self: flex-start; }
 
+/* ---------- Formulierbuilder ---------- */
+.fb-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.85rem; margin-top: 1.25rem; }
+.fb-card {
+    border: 1px solid var(--line); border-radius: 10px; background: #fff; padding: 1rem 1.1rem;
+    display: flex; flex-direction: column; gap: 0.75rem; transition: border-color 0.18s, box-shadow 0.18s;
+}
+.fb-card:hover { border-color: var(--copper); box-shadow: 0 8px 24px -14px rgba(26,23,20,0.25); }
+.fb-card h3 { font-size: 16px; margin: 0; font-weight: 600; }
+.fb-card-slug { font-size: 12px; color: var(--stone); font-family: 'SF Mono', Menlo, monospace; margin: 0.2rem 0 0; }
+.fb-card-stats { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.fb-card-count { font-size: 12px; color: var(--ink-soft); }
+.fb-card-actions { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.fb-template-btns { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-left: auto; }
+.fb-editor-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; margin-bottom: 1rem; }
+.fb-editor-head .view-head { margin: 0; }
+.fb-editor-tabs { display: flex; gap: 0.35rem; }
+.fb-tab {
+    border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 0.45rem 0.85rem;
+    font-size: 13px; cursor: pointer; font-family: inherit; color: var(--ink-soft);
+}
+.fb-tab.active { border-color: var(--copper); color: var(--ink); font-weight: 600; background: rgba(184,105,58,0.08); }
+.fb-editor-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-left: auto; }
+.fb-settings-bar { margin-bottom: 1rem; }
+.fb-workspace { display: grid; grid-template-columns: 200px 1fr 240px; gap: 1rem; align-items: start; }
+.fb-palette h2, .fb-preview h2, .fb-inspector h2 { font-size: 16px; margin: 0.25rem 0 0.5rem; }
+.fb-palette-grid { display: grid; gap: 0.4rem; margin-top: 0.75rem; }
+.fb-palette-btn {
+    display: flex; align-items: center; gap: 0.5rem; width: 100%; text-align: left;
+    border: 1px solid var(--line); background: #fff; border-radius: 6px; padding: 0.5rem 0.65rem;
+    font-size: 12px; cursor: pointer; font-family: inherit; transition: border-color 0.15s;
+}
+.fb-palette-btn:hover { border-color: var(--copper); background: rgba(184,105,58,0.05); }
+.fb-palette-ico { width: 22px; text-align: center; font-weight: 700; color: var(--copper); flex-shrink: 0; }
+.fb-preview-inner { margin-top: 0.75rem; background: var(--paper-warm); border-radius: 8px; padding: 1rem; min-height: 320px; }
+.fb-preview-field {
+    border: 2px dashed transparent; border-radius: 6px; padding: 0.35rem; margin: 0 -0.35rem 0.5rem;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+}
+.fb-preview-field:hover { border-color: var(--line); background: rgba(255,255,255,0.5); }
+.fb-preview-field.selected { border-color: var(--copper); background: rgba(184,105,58,0.06); }
+.fb-inspector .empty-state.small { padding: 1.5rem 0.5rem; font-size: 13px; }
+.fb-field-form { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 0.75rem; }
+.fb-field-form .text-input { background: #fff; }
+.fb-field-actions { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-top: 0.5rem; }
+.fb-submissions { display: grid; gap: 0.65rem; margin-top: 1rem; }
+.fb-sub-card { border: 1px solid var(--line); border-radius: 8px; padding: 0.85rem 1rem; background: #fff; }
+.fb-sub-head { display: flex; justify-content: space-between; gap: 1rem; font-size: 12px; margin-bottom: 0.6rem; color: var(--stone); }
+.fb-sub-head strong { color: var(--ink); font-family: 'SF Mono', Menlo, monospace; }
+.fb-sub-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 1rem; font-size: 13px; }
+.fb-sub-grid .k { display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--stone); }
+.fb-sub-grid .v { color: var(--ink); }
+@media (max-width: 1100px) {
+    .fb-workspace { grid-template-columns: 1fr; }
+    .fb-palette-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+    .fb-template-btns { margin-left: 0; width: 100%; }
+    .fb-editor-actions { margin-left: 0; width: 100%; }
+    .fb-palette-grid { grid-template-columns: repeat(2, 1fr); }
+    .fb-sub-grid { grid-template-columns: 1fr; }
+}
+
 /* ---------- Huisstijl ---------- */
 .sg-tokens { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.75rem; margin-top: 1.25rem; }
 .sg-token { display: flex; align-items: center; gap: 0.7rem; border: 1px solid var(--line); border-radius: 8px; padding: 0.6rem 0.7rem; background: #fff; }
@@ -635,6 +697,66 @@ a.mini-btn { text-decoration: none; display: inline-flex; align-items: center; }
 .compose-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
 .compose-hint { margin-top: 0.85rem; max-width: none; }
 .compose-preview { min-height: 520px; }
+
+/* ---------- MENU BUILDER ---------- */
+.menu-preview-panel { background: linear-gradient(180deg, var(--paper-warm) 0%, var(--paper) 100%); }
+.menu-preview-strip {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.35rem 1.25rem;
+    padding: 1rem 1.25rem; margin-top: 0.75rem;
+    background: var(--paper); border: 1px solid var(--line); border-radius: 6px;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.menu-preview-strip .menu-preview-logo {
+    font-family: 'Libre Caslon Text', serif; font-style: italic; font-size: 15px;
+    text-transform: none; letter-spacing: 0; margin-right: 0.5rem; color: var(--ink);
+}
+.menu-preview-strip a {
+    color: var(--ink-soft); text-decoration: none; padding-bottom: 2px;
+    border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s;
+}
+.menu-preview-strip a:hover { color: var(--copper); border-bottom-color: var(--copper-soft); }
+.menu-preview-strip .menu-preview-cta {
+    margin-left: auto; background: var(--copper); color: #fff; padding: 0.45rem 0.9rem;
+    border-radius: 3px; font-size: 10px; letter-spacing: 0.14em;
+}
+.menu-editor-list { display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1rem; }
+.menu-item-card {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 0.85rem; align-items: center;
+    padding: 0.85rem 1rem; background: var(--paper-warm); border: 1px solid var(--line);
+    border-radius: 6px; transition: box-shadow 0.15s, border-color 0.15s;
+}
+.menu-item-card:hover { border-color: var(--line-strong); box-shadow: 0 4px 16px -8px rgba(26,23,20,0.12); }
+.menu-item-card.is-hidden { opacity: 0.55; }
+.menu-item-card.is-dragging { opacity: 0.45; border-style: dashed; }
+.menu-item-grip {
+    display: flex; flex-direction: column; gap: 2px; cursor: grab; padding: 0.25rem;
+    color: var(--stone); font-size: 14px; line-height: 1; user-select: none;
+}
+.menu-item-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 0.75rem; min-width: 0; }
+.menu-item-fields .full { grid-column: 1 / -1; }
+.menu-item-type {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--copper); margin-bottom: 0.15rem;
+}
+.menu-item-actions { display: flex; flex-direction: column; gap: 0.35rem; align-items: center; }
+.menu-item-actions button {
+    width: 32px; height: 28px; border: 1px solid var(--line); background: var(--paper);
+    border-radius: 4px; cursor: pointer; font-size: 13px; color: var(--ink-soft);
+}
+.menu-item-actions button:hover:not(:disabled) { border-color: var(--copper); color: var(--copper); }
+.menu-item-actions button:disabled { opacity: 0.35; cursor: default; }
+.menu-save-row { display: flex; align-items: center; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap; }
+.menu-save-status { font-size: 13px; color: var(--ink-soft); }
+.page-menu-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--copper); background: rgba(184,105,58,0.12);
+    padding: 0.15rem 0.45rem; border-radius: 3px; margin-left: 0.5rem;
+}
+@media (max-width: 720px) {
+    .menu-item-card { grid-template-columns: 1fr; }
+    .menu-item-fields { grid-template-columns: 1fr; }
+    .menu-item-actions { flex-direction: row; justify-content: flex-end; }
+}
 
 @media (max-width: 980px) {
     .bouwer-grid { grid-template-columns: 1fr; }

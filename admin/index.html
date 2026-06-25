@@ -63,6 +63,12 @@
                 <a href="#paginas" class="sidenav-item" data-route="paginas">
                     <span class="sidenav-ico">▤</span> Pagina's
                 </a>
+                <a href="#menu" class="sidenav-item" data-route="menu">
+                    <span class="sidenav-ico">≡</span> Menu
+                </a>
+                <a href="#formulieren" class="sidenav-item" data-route="formulieren">
+                    <span class="sidenav-ico">☰</span> Formulieren
+                </a>
                 <a href="#agent" class="sidenav-item sidenav-item-featured" data-route="agent">
                     <span class="sidenav-ico">✦</span> Assistent
                 </a>
@@ -174,6 +180,152 @@
                     </div>
                     <div id="pagesList" class="pages-list"></div>
                     <div id="pagesEmpty" class="empty-state" hidden>Nog geen pagina's. <a href="#agent">Vraag de Assistent</a> om je eerste pagina te maken.</div>
+                </div>
+            </section>
+
+            <!-- ===== FORMULIEREN ===== -->
+            <section id="view-formulieren" class="view" hidden>
+                <div id="fbListView">
+                    <div class="view-head">
+                        <span class="panel-eyebrow">Formulieren</span>
+                        <h1>Formulierbuilder</h1>
+                        <p class="panel-desc">Maak eigen formulieren voor contact, offertes of afspraken. Gepubliceerde formulieren staan live op <code>/f/&lt;slug&gt;</code>.</p>
+                    </div>
+                    <div class="panel">
+                        <div class="toolbar">
+                            <button id="fbNewBtn" class="btn-primary small">Nieuw formulier</button>
+                            <div class="fb-template-btns">
+                                <button type="button" class="btn-ghost dark small" data-tpl="contact">Sjabloon: Contact</button>
+                                <button type="button" class="btn-ghost dark small" data-tpl="offerte">Sjabloon: Offerte</button>
+                                <button type="button" class="btn-ghost dark small" data-tpl="showroom">Sjabloon: Showroom</button>
+                            </div>
+                            <button id="fbRefreshBtn" class="btn-ghost dark small" title="Vernieuwen">↻</button>
+                        </div>
+                        <div id="fbCards" class="fb-cards"></div>
+                        <div id="fbEmpty" class="empty-state" hidden>Nog geen formulieren. Maak er een met <strong>Nieuw formulier</strong> of kies een sjabloon.</div>
+                    </div>
+                </div>
+
+                <div id="fbEditorView" hidden>
+                    <div class="view-head fb-editor-head">
+                        <button type="button" id="fbBackBtn" class="btn-ghost dark small">← Terug naar overzicht</button>
+                        <div class="fb-editor-tabs">
+                            <button type="button" class="fb-tab active" data-tab="builder">Bouwen</button>
+                            <button type="button" class="fb-tab" data-tab="submissions">Inzendingen <span id="fbSubCount" class="nav-badge">0</span></button>
+                        </div>
+                        <div class="fb-editor-actions">
+                            <a id="fbPreviewLink" class="btn-ghost dark small" target="_blank" href="#">Bekijk live ↗</a>
+                            <button type="button" id="fbSaveBtn" class="btn-primary small">Opslaan</button>
+                            <button type="button" id="fbPublishBtn" class="btn-ghost dark small">Publiceren</button>
+                        </div>
+                    </div>
+
+                    <div id="fbTabBuilder" class="fb-tab-panel">
+                        <div class="fb-settings-bar panel">
+                            <div class="form-grid">
+                                <div><label class="field-label">Naam</label><input class="text-input" id="fbName" placeholder="Contactformulier"/></div>
+                                <div><label class="field-label">Slug (url)</label><input class="text-input" id="fbSlug" placeholder="contact"/></div>
+                                <div><label class="field-label">Knoptekst</label><input class="text-input" id="fbSubmitLabel" placeholder="Versturen"/></div>
+                                <div><label class="field-label">Status</label>
+                                    <select class="text-input" id="fbStatus">
+                                        <option value="concept">Concept</option>
+                                        <option value="gepubliceerd">Gepubliceerd</option>
+                                    </select>
+                                </div>
+                                <div class="span2"><label class="field-label">Succesbericht</label><input class="text-input" id="fbSuccess" placeholder="Bedankt! We nemen contact op."/></div>
+                                <div class="span2"><label class="field-label">Melding naar e-mail</label><input class="text-input" id="fbNotify" type="email" placeholder="info@deurmeester.nl"/></div>
+                            </div>
+                        </div>
+                        <div class="fb-workspace">
+                            <aside class="fb-palette panel">
+                                <span class="panel-eyebrow">Velden</span>
+                                <h2>Toevoegen</h2>
+                                <p class="panel-desc">Klik om een veld toe te voegen.</p>
+                                <div id="fbPalette" class="fb-palette-grid"></div>
+                            </aside>
+                            <div class="fb-preview panel">
+                                <span class="panel-eyebrow">Voorbeeld</span>
+                                <h2>Live preview</h2>
+                                <div id="fbPreview" class="fb-preview-inner"></div>
+                            </div>
+                            <aside class="fb-inspector panel">
+                                <span class="panel-eyebrow">Instellingen</span>
+                                <h2 id="fbInspectorTitle">Veld</h2>
+                                <div id="fbInspectorEmpty" class="empty-state small">Selecteer een veld om te bewerken.</div>
+                                <div id="fbInspector" hidden>
+                                    <div class="fb-field-form">
+                                        <label class="field-label">Label / tekst</label>
+                                        <input class="text-input" id="fbFieldLabel"/>
+                                        <label class="field-label" id="fbPhLabel">Placeholder</label>
+                                        <input class="text-input" id="fbFieldPlaceholder"/>
+                                        <label class="switch fb-req-switch"><input type="checkbox" id="fbFieldRequired"/><span>Verplicht veld</span></label>
+                                        <div id="fbOptionsWrap" hidden>
+                                            <label class="field-label">Opties (één per regel)</label>
+                                            <textarea class="text-input" id="fbFieldOptions" rows="4"></textarea>
+                                        </div>
+                                        <div class="fb-field-actions">
+                                            <button type="button" class="mini-btn" id="fbFieldUp">↑ Omhoog</button>
+                                            <button type="button" class="mini-btn" id="fbFieldDown">↓ Omlaag</button>
+                                            <button type="button" class="mini-btn danger" id="fbFieldDelete">Verwijderen</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+
+                    <div id="fbTabSubmissions" class="fb-tab-panel" hidden>
+                        <div class="panel">
+                            <div class="toolbar">
+                                <h2>Inzendingen</h2>
+                                <a id="fbExportCsv" class="btn-ghost dark small" href="#">Exporteer CSV</a>
+                            </div>
+                            <div id="fbSubmissionsList" class="fb-submissions"></div>
+                            <div id="fbSubmissionsEmpty" class="empty-state" hidden>Nog geen inzendingen voor dit formulier.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== MENU ===== -->
+            <section id="view-menu" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Navigatie</span>
+                    <h1>Menu</h1>
+                    <p class="panel-desc">Bepaal welke pagina's en links in het hoofdmenu en de footer verschijnen. Sleep of gebruik de pijltjes om te sorteren.</p>
+                </div>
+
+                <div class="panel menu-preview-panel">
+                    <span class="panel-eyebrow">Voorbeeld</span>
+                    <h2>Zo ziet het hoofdmenu eruit</h2>
+                    <div id="menuPreviewStrip" class="menu-preview-strip" aria-label="Menu-voorbeeld"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Hoofdmenu</span>
+                            <h2>Navigatiebalk</h2>
+                        </div>
+                        <button id="menuAddMain" class="btn-primary small" type="button">+ Voeg menu-item toe</button>
+                    </div>
+                    <div id="menuMainList" class="menu-editor-list"></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Footer</span>
+                            <h2>Footer-links</h2>
+                        </div>
+                        <button id="menuAddFooter" class="btn-ghost dark small" type="button">+ Voeg footer-link toe</button>
+                    </div>
+                    <div id="menuFooterList" class="menu-editor-list"></div>
+                </div>
+
+                <div class="menu-save-row">
+                    <button id="menuSaveBtn" class="btn-primary">Menu opslaan</button>
+                    <span id="menuSaveStatus" class="menu-save-status"></span>
                 </div>
             </section>
 
@@ -509,6 +661,7 @@
 
 <div id="toast" class="toast"></div>
 
+<script src="/admin/form-builder.js"></script>
 <script src="/admin/admin.js"></script>
 </body>
 </html>

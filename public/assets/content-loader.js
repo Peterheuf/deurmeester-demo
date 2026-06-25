@@ -1,11 +1,8 @@
 /**
  * DeurMeester - content loader (homepage)
  *
- * Draait op ELKE homepage-load. Injecteert eerst de dynamische menu-items
- * (gepubliceerde pagina's met inMenu) in de navigatie, scant daarna de bewerkbare
- * elementen (via de gedeelde scanner ILScan, zodat de sleutels exact matchen met
- * de live builder en met losse pagina's), haalt de opgeslagen content-overrides
- * op van de server en past ze toe (via de gedeelde ILApply).
+ * Draait op ELKE homepage-load. Injecteert het menu uit /api/menu in desktop-
+ * en mobiele navigatie, scant daarna bewerkbare elementen en past overrides toe.
  */
 (function () {
     'use strict';
@@ -39,11 +36,9 @@
     const LOGO_SELECTORS   = (window.ILApply && window.ILApply.DEFAULT_LOGO_SELECTORS) || '.nav-logo img, .footer-logo, .hero-stamp-center';
     const HERO_BG_SELECTOR = (window.ILApply && window.ILApply.DEFAULT_HERO_BG_SELECTOR) || '.hero-bg img';
 
-    // De gedeelde scanner (il-scan.js) en apply-logica (il-apply.js).
     const Scan = window.ILScan || {};
     const Apply = window.ILApply || {};
 
-    // Homepage-scan op basis van de vaste SECTIONS.
     function scanEditables() {
         if (!Scan.scanSections) return { editables: [], editablesByKey: {} };
         const out = Scan.scanSections(SECTIONS);
@@ -65,34 +60,52 @@
         return defaults;
     }
 
-    // Dynamische menu-items ophalen en in de navigatie injecteren. Markeert elke
-    // link met class il-menu-link + data-slug, zodat de scanner ze een stabiele
-    // sleutel (menu.<slug>) geeft die overal (homepage + losse pagina's) matcht.
-    // Geeft een Promise terug zodat de scan ná de injectie kan draaien.
+    function createMenuLink(it) {
+        const a = document.createElement('a');
+        a.href = it.url;
+        a.textContent = it.label || it.url;
+        if (it.slug || (it.url && it.url.indexOf('/p/') === 0)) {
+            a.className = 'il-menu-link';
+            const slug = it.slug || it.url.split(/[?#]/)[0].split('/').filter(Boolean).pop();
+            if (slug) a.dataset.slug = slug;
+        }
+        return a;
+    }
+
     function injectMenu() {
         return fetch('/api/menu')
             .then(r => (r.ok ? r.json() : []))
             .then(items => {
                 if (!Array.isArray(items) || !items.length) return;
+
                 document.querySelectorAll('.nav-links').forEach(nav => {
-                    if (nav.dataset.ilMenu === '1') return;
-                    nav.dataset.ilMenu = '1';
+                    nav.innerHTML = '';
                     items.forEach(it => {
                         if (!it || !it.url) return;
-                        const a = document.createElement('a');
-                        a.href = it.url;
-                        a.textContent = it.label || it.url;
-                        a.className = 'il-menu-link';
-                        const slug = it.url.split(/[?#]/)[0].split('/').filter(Boolean).pop();
-                        if (slug) a.dataset.slug = slug;
-                        nav.appendChild(a);
+                        nav.appendChild(createMenuLink(it));
                     });
                 });
+
+                document.querySelectorAll('.mobile-nav-links').forEach(nav => {
+                    const cta = nav.querySelector('.mobile-nav-cta');
+                    nav.innerHTML = '';
+                    items.forEach(it => {
+                        if (!it || !it.url) return;
+                        nav.appendChild(createMenuLink(it));
+                    });
+                    if (cta) nav.appendChild(cta);
+                    else {
+                        const offerte = document.createElement('a');
+                        offerte.href = '#boeken';
+                        offerte.className = 'mobile-nav-cta';
+                        offerte.textContent = 'Offerte aanvragen';
+                        nav.appendChild(offerte);
+                    }
+                });
             })
-            .catch(() => { /* zonder server: geen extra menu-items */ });
+            .catch(() => { /* zonder server: statische nav blijft staan */ });
     }
 
-    // Gedeelde namespace voor de live builder.
     const ILContent = {
         SECTIONS, COLOR_TOKENS,
         EDITABLE_TAGS: Scan.EDITABLE_TAGS || [], INLINE_TAGS: Scan.INLINE_TAGS || [],
@@ -108,15 +121,12 @@
     window.ILContent = ILContent;
 
     function init() {
-        // 1. Eerst menu-items injecteren, daarna scannen zodat de menu-links
-        //    meteen een stabiele sleutel krijgen en bewerkbaar zijn.
         injectMenu().finally(() => {
             const scan = scanEditables();
             ILContent.editables = scan.editables;
             ILContent.editablesByKey = scan.editablesByKey;
             ILContent.defaultColors = readDefaultColors();
 
-            // 2. Opgeslagen content ophalen en toepassen.
             fetch('/api/content')
                 .then(r => (r.ok ? r.json() : null))
                 .then(content => {

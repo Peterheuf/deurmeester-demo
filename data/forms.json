@@ -1,0 +1,218 @@
+[
+  {
+    "id": "form-contact-demo",
+    "name": "Contactformulier",
+    "slug": "contact",
+    "status": "gepubliceerd",
+    "fields": [
+      {
+        "id": "f1",
+        "type": "heading",
+        "label": "Neem contact op"
+      },
+      {
+        "id": "f2",
+        "type": "text",
+        "label": "Naam",
+        "required": true,
+        "placeholder": "Je volledige naam"
+      },
+      {
+        "id": "f3",
+        "type": "email",
+        "label": "E-mail",
+        "required": true,
+        "placeholder": "naam@voorbeeld.nl"
+      },
+      {
+        "id": "f4",
+        "type": "tel",
+        "label": "Telefoon",
+        "required": false,
+        "placeholder": "+31 6 ..."
+      },
+      {
+        "id": "f5",
+        "type": "select",
+        "label": "Onderwerp",
+        "options": [
+          "Offerte",
+          "Vraag",
+          "Anders"
+        ],
+        "required": true
+      },
+      {
+        "id": "f6",
+        "type": "textarea",
+        "label": "Bericht",
+        "required": true,
+        "placeholder": "Waar kunnen we je mee helpen?"
+      },
+      {
+        "id": "f7",
+        "type": "checkbox",
+        "label": "Ik ga akkoord met de privacyverklaring",
+        "required": true
+      }
+    ],
+    "submitLabel": "Versturen",
+    "successMessage": "Bedankt! We nemen zo snel mogelijk contact met je op.",
+    "notifyEmail": "info@deurmeester.nl",
+    "createdAt": "2026-06-25T10:00:00.000Z",
+    "updatedAt": "2026-06-25T10:00:00.000Z",
+    "submissions": [
+      {
+        "id": "FS-MQTLNLF1",
+        "createdAt": "2026-06-25T14:30:42.733Z",
+        "data": {
+          "f2": "Test",
+          "f3": "test@test.nl",
+          "f4": "",
+          "f5": "Vraag",
+          "f6": "Hallo",
+          "f7": "Ja"
+        },
+        "ip": "::ffff:127.0.0.1"
+      }
+    ]
+  },
+  {
+    "id": "form-offerte-demo",
+    "name": "Offerte aanvraag",
+    "slug": "offerte",
+    "status": "gepubliceerd",
+    "fields": [
+      {
+        "id": "f1",
+        "type": "heading",
+        "label": "Vraag een offerte aan"
+      },
+      {
+        "id": "f2",
+        "type": "paragraph",
+        "label": "Vertel kort wat je zoekt. We nemen contact op voor de details."
+      },
+      {
+        "id": "f3",
+        "type": "text",
+        "label": "Naam",
+        "required": true
+      },
+      {
+        "id": "f4",
+        "type": "email",
+        "label": "E-mail",
+        "required": true
+      },
+      {
+        "id": "f5",
+        "type": "tel",
+        "label": "Telefoon",
+        "required": true
+      },
+      {
+        "id": "f6",
+        "type": "select",
+        "label": "Type deur",
+        "options": [
+          "Taatsdeur",
+          "Schuifdeur",
+          "Draaideur",
+          "Weet ik nog niet"
+        ],
+        "required": true
+      },
+      {
+        "id": "f7",
+        "type": "number",
+        "label": "Aantal deuren",
+        "required": false,
+        "placeholder": "1"
+      },
+      {
+        "id": "f8",
+        "type": "textarea",
+        "label": "Wensen of opmerkingen",
+        "required": false
+      }
+    ],
+    "submitLabel": "Offerte aanvragen",
+    "successMessage": "Bedankt! We sturen binnen 48 uur een vrijblijvende offerte.",
+    "notifyEmail": "info@deurmeester.nl",
+    "createdAt": "2026-06-25T10:00:00.000Z",
+    "updatedAt": "2026-06-25T10:00:00.000Z",
+    "submissions": []
+  },
+  {
+    "id": "form-showroom-demo",
+    "name": "Showroom afspraak",
+    "slug": "showroom",
+    "status": "gepubliceerd",
+    "fields": [
+      {
+        "id": "f1",
+        "type": "heading",
+        "label": "Plan een showroombezoek"
+      },
+      {
+        "id": "f2",
+        "type": "text",
+        "label": "Naam",
+        "required": true
+      },
+      {
+        "id": "f3",
+        "type": "email",
+        "label": "E-mail",
+        "required": true
+      },
+      {
+        "id": "f4",
+        "type": "tel",
+        "label": "Telefoon",
+        "required": true
+      },
+      {
+        "id": "f5",
+        "type": "date",
+        "label": "Gewenste datum",
+        "required": true
+      },
+      {
+        "id": "f6",
+        "type": "select",
+        "label": "Voorkeurstijd",
+        "options": [
+          "Ochtend (9–12u)",
+          "Middag (12–17u)",
+          "Geen voorkeur"
+        ],
+        "required": true
+      },
+      {
+        "id": "f7",
+        "type": "radio",
+        "label": "Aantal personen",
+        "options": [
+          "Alleen",
+          "Met partner",
+          "Met adviseur"
+        ],
+        "required": false
+      },
+      {
+        "id": "f8",
+        "type": "textarea",
+        "label": "Opmerkingen",
+        "required": false
+      }
+    ],
+    "submitLabel": "Afspraak aanvragen",
+    "successMessage": "Bedankt! We bevestigen je showroombezoek per e-mail.",
+    "notifyEmail": "info@deurmeester.nl",
+    "createdAt": "2026-06-25T10:00:00.000Z",
+    "updatedAt": "2026-06-25T10:00:00.000Z",
+    "submissions": []
+  }
+]
