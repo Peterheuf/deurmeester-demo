@@ -976,9 +976,35 @@
         'Ik wil een pagina over onderhoud van binnendeuren',
         'Voeg een sectie toe over maatwerk taatsdeuren',
         'Pas de homepage aan',
-        'Ik wil een nieuwe dienstenpagina',
+        'Ik wil een nieuwe dienstenpagina met warme luxe sfeer',
         'Welke offerteaanvragen zijn nieuw?'
     ];
+
+    const DESIGN_DIMENSION_LABELS = {
+        sfeer: { label: 'Sfeer', icon: '✨' },
+        layout: { label: 'Layout', icon: '📐' },
+        kleuraccent: { label: 'Kleuraccent', icon: '🎨' },
+        typografie: { label: 'Typografie', icon: 'Aa' },
+        beelden: { label: 'Beelden', icon: '🖼' },
+        sectiestijl: { label: 'Sectiestijl', icon: '▦' },
+        cta: { label: 'CTA-stijl', icon: '◎' },
+        uniek: { label: 'Uniek element', icon: '★' }
+    };
+
+    function formatDesignSummaryHtml(design) {
+        if (!design || typeof design !== 'object') return '';
+        const keys = Object.keys(DESIGN_DIMENSION_LABELS);
+        const rows = keys.filter(k => design[k]).map(k => {
+            const meta = DESIGN_DIMENSION_LABELS[k];
+            return '<span class="agent-design-chip" title="' + escapeHtml(meta.label) + '">' +
+                '<span class="agent-design-icon" aria-hidden="true">' + meta.icon + '</span>' +
+                '<span class="agent-design-key">' + escapeHtml(meta.label) + '</span>' +
+                '<span class="agent-design-val">' + escapeHtml(String(design[k])) + '</span>' +
+                '</span>';
+        });
+        if (!rows.length) return '';
+        return '<div class="agent-plan-design"><span class="agent-plan-label">Pagina-design</span><div class="agent-design-chips">' + rows.join('') + '</div></div>';
+    }
 
     function saveAgentHistory() {
         try {
@@ -1053,7 +1079,7 @@
     function getContextualAgentSuggestions() {
         const route = location.hash.slice(1) || 'agent';
         if (agentPendingPlan) {
-            return ['Ziet er goed uit, maak de pagina', 'Nog iets aanpassen', 'Andere afbeelding voor de hero'];
+            return ['Ziet er goed uit, maak de pagina', 'Andere sfeer of layout', 'Andere afbeelding voor de hero', 'Nog iets aanpassen'];
         }
         if (route === 'aanvragen') {
             return ['Welke offerteaanvragen zijn nieuw?'].concat(PAGE_BUILD_STARTERS.slice(0, 3));
@@ -1112,6 +1138,7 @@
         if (plan.toon) html += '<div><dt>Toon</dt><dd>' + escapeHtml(plan.toon) + '</dd></div>';
         if (plan.cta) html += '<div><dt>Actie</dt><dd>' + escapeHtml(plan.cta) + '</dd></div>';
         html += '</dl>';
+        if (plan.design) html += formatDesignSummaryHtml(plan.design);
         if (beelden.length) {
             html += '<div class="agent-plan-images">';
             beelden.forEach(img => {

@@ -15,6 +15,7 @@ const cookieSession = require('cookie-session');
 const multer = require('multer');
 const { sendMail } = require('./lib/mailer');
 const aiagent = require('./lib/aiagent');
+const pageDesign = require('./lib/page-design-variants');
 const blocks = require('./lib/blocks');
 const wireframes = require('./lib/wireframes');
 const elements = require('./lib/elements');
@@ -1139,8 +1140,19 @@ function buildGenerationPromptFromPlan(plan) {
     if (plan.doelgroep) parts.push('Doelgroep: ' + plan.doelgroep);
     if (plan.toon) parts.push('Toon: ' + plan.toon);
     if (plan.cta) parts.push('Call-to-action: ' + plan.cta);
+
+    const design = pageDesign.normalizeDesign(plan.design);
+    parts.push('');
+    parts.push('Designkeuzes (strikt toepassen):');
+    pageDesign.designSummaryForDisplay(design).forEach(row => {
+        parts.push('- ' + row.label + ': ' + row.value);
+    });
+    parts.push('');
+    parts.push(pageDesign.getDesignPromptBlock(design));
+
     const secties = Array.isArray(plan.secties) ? plan.secties : (Array.isArray(plan.sections) ? plan.sections : []);
     if (secties.length) {
+        parts.push('');
         parts.push('Secties in volgorde:');
         secties.forEach((s, i) => {
             if (s && typeof s === 'object') {
@@ -1152,6 +1164,7 @@ function buildGenerationPromptFromPlan(plan) {
     }
     const beelden = Array.isArray(plan.beelden) ? plan.beelden : (Array.isArray(plan.images) ? plan.images : []);
     if (beelden.length) {
+        parts.push('');
         parts.push('Afbeeldingen (gebruik exact deze URL\'s in img-tags):');
         beelden.forEach((img, i) => {
             const label = (img && img.label) || 'Afbeelding';
@@ -1159,7 +1172,8 @@ function buildGenerationPromptFromPlan(plan) {
             parts.push('  ' + (i + 1) + '. ' + label + ': ' + url);
         });
     }
-    parts.push('Bouw een complete body-HTML in de DeurMeester huisstijl. Gebruik bestaande CSS-classes uit site-base.css.');
+    parts.push('');
+    parts.push('Bouw een complete body-HTML in de DeurMeester huisstijl. Pas ALLE design-keuzes toe zodat de pagina uniek oogt.');
     return parts.join('\n');
 }
 
@@ -1168,8 +1182,11 @@ function normalizePlanForBuild(plan) {
     const normalized = { ...plan };
     if (!normalized.images && Array.isArray(normalized.beelden)) normalized.images = normalized.beelden;
     if (!normalized.title && normalized.titel) normalized.title = normalized.titel;
+    normalized.design = pageDesign.normalizeDesign(normalized.design);
     if (!normalized.generationPrompt || !String(normalized.generationPrompt).trim()) {
         normalized.generationPrompt = buildGenerationPromptFromPlan(normalized);
+    } else if (!String(normalized.generationPrompt).includes('PAGINA-DESIGN')) {
+        normalized.generationPrompt = String(normalized.generationPrompt).trim() + '\n\n' + pageDesign.getDesignPromptBlock(normalized.design);
     }
     return normalized;
 }
@@ -1231,6 +1248,7 @@ async function enrichAgentActions(actions, settings, styleguide, examples, plan)
             examples,
             baseHtml: baseHtml || undefined,
             structure: structure || undefined,
+            design: plan && plan.design ? plan.design : undefined,
             preferFast: IS_SERVERLESS
         });
         enriched.push({ ...a, html: gen.html });
