@@ -1,0 +1,51 @@
+[build]
+  command = "npm install"
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = [
+    "express",
+    "cookie-session",
+    "cookie-parser",
+    "multer",
+    "nodemailer",
+    "serverless-http"
+  ]
+  included_files = [
+    "./data/**",
+    "./public/**",
+    "./admin/**",
+    "./theme/**",
+    "./lib/**"
+  ]
+
+[functions.server]
+  timeout = 26
+
+# Dynamic routes → serverless Express (static files in public/ are served by CDN first)
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/admin/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/p/*"
+  to = "/.netlify/functions/server"
+  status = 200
+
+[[redirects]]
+  from = "/uploads/*"
+  to = "/.netlify/functions/server"
+  status = 200

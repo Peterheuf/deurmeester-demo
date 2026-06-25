@@ -1,0 +1,85 @@
+{
+  "tokens": [
+    {
+      "var": "--ink",
+      "hex": "#1a1714",
+      "label": "Inkt (donker)"
+    },
+    {
+      "var": "--ink-soft",
+      "hex": "#2d2620",
+      "label": "Inkt zacht"
+    },
+    {
+      "var": "--paper",
+      "hex": "#f5ede0",
+      "label": "Papier (achtergrond)"
+    },
+    {
+      "var": "--paper-warm",
+      "hex": "#ebe0cc",
+      "label": "Papier warm"
+    },
+    {
+      "var": "--paper-deep",
+      "hex": "#ddcdb3",
+      "label": "Papier diep"
+    },
+    {
+      "var": "--sage",
+      "hex": "#4d5440",
+      "label": "Salie"
+    },
+    {
+      "var": "--sage-deep",
+      "hex": "#2f3527",
+      "label": "Salie diep"
+    },
+    {
+      "var": "--sage-light",
+      "hex": "#c2cab0",
+      "label": "Salie licht"
+    },
+    {
+      "var": "--copper",
+      "hex": "#b8693a",
+      "label": "Koper (accent)"
+    },
+    {
+      "var": "--copper-hot",
+      "hex": "#c1622a",
+      "label": "Koper warm"
+    },
+    {
+      "var": "--copper-soft",
+      "hex": "#e9c39a",
+      "label": "Koper zacht"
+    },
+    {
+      "var": "--stone",
+      "hex": "#8a7c67",
+      "label": "Steen"
+    },
+    {
+      "var": "--line",
+      "hex": "rgba(26, 23, 20, 0.14)",
+      "label": "Lijn"
+    },
+    {
+      "var": "--line-strong",
+      "hex": "rgba(26, 23, 20, 0.32)",
+      "label": "Lijn sterk"
+    }
+  ],
+  "fonts": {
+    "heading": "Libre Caslon Text",
+    "body": "Montserrat",
+    "accent": "Caveat",
+    "googleFontsHref": "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@500;700&display=swap"
+  },
+  "voice": "Warm en professioneel Nederlands. Concreet over kwaliteit, maatwerk en montage.\nMenselijk en betrouwbaar, alsof een deurmeester het persoonlijk uitlegt.\nNiet opgeklopt en niet 'AI-achtig'. Geen loze superlatieven of clichés.\nGebruik GEEN em-dashes (—). Schrijf rustige, korte zinnen.\nLiever tonen dan opscheppen: vertel wat je levert en wat het de klant oplevert.",
+  "components": "Layout:\n  .container / .container-wide  - gecentreerde inhoud (max 1100 / 1440px).\n  section.section               - sectie met ruime padding. Varianten: .section-warm, .section-deep, .section-ink (donker), .section-sage (groen).\n  .split                        - tweekoloms-grid (klapt om op mobiel).\n  .section-head                 - gecentreerde sectiekop met <span class=\"eyebrow\"> + <h2> + <p>.\n\nPagina-intro:\n  section.page-hero             - donkere kop bovenaan met .eyebrow, <h1>, .page-hero-sub en optioneel een <span class=\"script\">.\n\nTypografie:\n  .eyebrow                      - klein kapitaal koperen labeltje boven een kop.\n  .lead                         - cursieve introzin in serif.\n  .script                       - handgeschreven accent (Caveat).\n  <em> in koppen kleurt automatisch koper.\n\nKnoppen:\n  .cta of .btn.cta              - koperen call-to-action.\n  .btn                          - groene (sage) knop.\n  .btn-link                     - tekstlink met koperen onderstreping en pijl.\n\nKaarten en blokken:\n  .card-grid > .card            - responsive kaartenraster. Gebruik <h3>, .script, <p>.\n  .card.card-photo              - kaart met <img> bovenaan en .card-body eronder.\n  .feature-list                 - lijst met koperen stip per item.\n  .quote                        - groot citaat met koperen rand links.\n  .callout                      - donker uitgelicht blok met tekst + knop.",
+  "baseCssUrl": "/assets/site-base.css",
+  "guidelines": "Bouw een pagina van boven naar beneden op: begin met een section.page-hero met een korte, pakkende kop en een zin of twee uitleg.\nWissel daarna lichte en donkere secties af (section / section-warm / section-ink / section-sage) zodat er ritme in de pagina zit.\nHoud het rustig: niet te veel knoppen of kleuren per scherm. Veel witruimte hoort bij de stijl.\nGebruik korte alinea's en concrete taal. Schrijf als een vakman die helder uitlegt, niet als een brochure.\nSluit een pagina vaak af met een .callout of een duidelijke call-to-action (bijvoorbeeld een link naar /#boeken voor een offerte).\nVerwijs voor de deurconfigurator naar /#boeken en voor contact naar het e-mailadres uit de instellingen.\nGebruik nooit em-dashes (—). Gebruik gewone zinnen, een komma of een punt.",
+  "updatedAt": "2026-06-08T11:26:38.417Z"
+}

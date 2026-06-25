@@ -1,0 +1,105 @@
+/* =====================================================
+   DeurMeester - blocks.css
+   -----------------------------------------------------
+   Aanvullende, herbruikbare stijl voor de template-blokken
+   uit lib/blocks.js. Bouwt voort op de tokens en componenten
+   van site-base.css. Alle selectors hebben het voorvoegsel
+   "bl-" zodat ze nooit botsen met bestaande site-stijl.
+
+   Dit bestand wordt overal geladen waar site-base.css ook
+   geladen wordt (homepage, /p/-pagina's en de admin-previews),
+   zodat de blokken altijd identiek renderen.
+===================================================== */
+
+/* Beeld in een blok: nette ronding + verhouding, zoals .card-photo. */
+.bl-figure {
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.bl-figure img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+}
+.bl-figure-portret img { aspect-ratio: 3 / 4; }
+
+/* Bij de portret-variant het beeld smaller houden naast de tekst. */
+.bl-split-portret { grid-template-columns: 1.2fr 0.8fr; }
+
+/* -------- Foto-galerij -------- */
+.bl-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+}
+.bl-gallery-item {
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.bl-gallery-item img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.bl-gallery-item:hover img { transform: scale(1.04); }
+
+/* -------- Prijzen / pakketten -------- */
+.bl-price { display: flex; flex-direction: column; }
+.bl-price .mono-label { color: var(--copper); margin-bottom: 0.5rem; }
+.bl-price-amount {
+    font-family: 'Libre Caslon Text', 'Times New Roman', serif;
+    font-size: clamp(30px, 4vw, 44px);
+    line-height: 1.05;
+    color: var(--ink);
+}
+.bl-price .script { color: var(--stone); margin: 0.1rem 0 1.25rem; display: block; }
+.bl-price .feature-list { margin-bottom: 1.75rem; }
+.bl-price .cta { margin-top: auto; align-self: flex-start; }
+
+/* Uitgelicht pakket: koperen rand + lichte schaalvergroting. */
+.bl-price-featured {
+    border-color: var(--copper);
+    box-shadow: 0 24px 48px -28px rgba(184, 105, 58, 0.5);
+}
+.bl-price-featured .bl-price-amount { color: var(--copper); }
+.section-ink .bl-price-amount,
+.section-sage .bl-price-amount { color: var(--paper); }
+
+/* -------- Stappenplan -------- */
+.bl-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+}
+.bl-step { position: relative; padding-top: 0.5rem; }
+.bl-step-num {
+    font-family: 'Libre Caslon Text', 'Times New Roman', serif;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--copper);
+    display: inline-block;
+    margin-bottom: 0.75rem;
+}
+.bl-step h3 { font-size: clamp(20px, 2.4vw, 26px); margin-bottom: 0.5rem; }
+.bl-step p { color: var(--ink-soft); font-size: 14px; line-height: 1.7; }
+.section-ink .bl-step p, .section-sage .bl-step p { color: rgba(245, 237, 224, 0.78); }
+
+/* -------- FAQ -------- */
+.bl-faq { max-width: 760px; margin: 0 auto; }
+.bl-faq-item {
+    padding: 1.5rem 0;
+    border-top: 1px solid var(--line);
+}
+.bl-faq-item:last-child { border-bottom: 1px solid var(--line); }
+.bl-faq-item h3 { font-size: clamp(18px, 2.2vw, 23px); margin-bottom: 0.5rem; }
+.bl-faq-item p { color: var(--ink-soft); font-size: 14.5px; line-height: 1.7; }
+
+/* -------- Responsive -------- */
+@media (max-width: 1024px) {
+    .bl-split-portret { grid-template-columns: 1fr; }
+}

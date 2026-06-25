@@ -1,0 +1,47 @@
+{
+  "brand": "DeurMeester",
+  "description": "Theme-manifest dat de site-specifieke instellingen (selectors, secties, kleur-tokens) scheidt van de generieke CMS-engine (il-scan/il-apply/content-loader/builder). Een nieuwe site kopieert dit bestand en past alleen deze waarden aan.",
+  "chromeSections": [
+    { "id": "topstrip", "name": "Top strip", "selector": ".topstrip" },
+    { "id": "nav", "name": "Navigatie", "selector": "nav.global" },
+    { "id": "footer", "name": "Footer", "selector": "footer" }
+  ],
+  "skipClasses": [
+    "marquee-track",
+    "hero-corner-tl",
+    "hero-corner-tr",
+    "hero-corner-bl",
+    "hero-corner-br",
+    "hero-stamp-ring",
+    "chapter-decor",
+    "fac-icon",
+    "step-num",
+    "model-badge"
+  ],
+  "skipSubtrees": ".marquee, .hero-stamp, .hero-bg",
+  "logoImgSelector": ".nav-logo img, .footer-logo, .hero-stamp-center",
+  "heroBgImgSelector": ".hero-bg img",
+  "homepageSections": [
+    { "id": "topstrip", "name": "Top strip", "selector": ".topstrip" },
+    { "id": "nav", "name": "Navigatie", "selector": "nav.global" },
+    { "id": "hero", "name": "Hero", "selector": ".hero" },
+    { "id": "marquee", "name": "Marquee", "selector": ".marquee" },
+    { "id": "filosofie", "name": "Vakmanschap \u00b7 01", "selector": "#filosofie" },
+    { "id": "ruimtes", "name": "Collectie \u00b7 02", "selector": "#ruimtes" },
+    { "id": "faciliteiten", "name": "Materialen \u00b7 03", "selector": "#faciliteiten" },
+    { "id": "verblijf", "name": "Montage \u00b7 04", "selector": "#verblijf" },
+    { "id": "locatie", "name": "Showroom \u00b7 05", "selector": "#locatie" },
+    { "id": "boeken", "name": "Offerte \u00b7 06", "selector": "#boeken" },
+    { "id": "footer", "name": "Footer", "selector": "footer" }
+  ],
+  "colorTokens": [
+    { "var": "--ink", "label": "Donker (tekst & dark sections)" },
+    { "var": "--paper", "label": "Cr\u00e8me (achtergrond)" },
+    { "var": "--paper-warm", "label": "Cr\u00e8me warm (panel & cards)" },
+    { "var": "--sage-deep", "label": "Sage donker (groen accent)" },
+    { "var": "--sage", "label": "Sage" },
+    { "var": "--copper", "label": "Koper (primair accent)" },
+    { "var": "--copper-hot", "label": "Koper helder (hover)" },
+    { "var": "--copper-soft", "label": "Koper zacht (subtiel)" }
+  ]
+}

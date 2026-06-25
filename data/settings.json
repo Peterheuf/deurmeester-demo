@@ -1,0 +1,26 @@
+{
+  "bedrijfsnaam": "DeurMeester",
+  "tagline": "Binnendeuren op maat",
+  "contactEmail": "",
+  "telefoon": "",
+  "adres": "",
+  "meldingsEmail": "",
+  "smtp": {
+    "host": "",
+    "port": 587,
+    "secure": false,
+    "user": "",
+    "pass": "",
+    "fromNaam": "DeurMeester",
+    "fromAdres": ""
+  },
+  "updatedAt": null,
+  "ai": {
+    "provider": "openrouter",
+    "apiKey": "",
+    "baseUrl": "https://openrouter.ai/api/v1",
+    "model": "moonshotai/kimi-k2.6",
+    "pageBuilderModel": "moonshotai/kimi-k2.6",
+    "enabled": false
+  }
+}

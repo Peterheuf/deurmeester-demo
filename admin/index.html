@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>DeurMeester · Beheer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/admin/admin.css"/>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginView" class="login-view" hidden>
+    <div class="login-card">
+        <div class="login-brand">
+            <img src="/images/logo.png" alt="DeurMeester"/>
+            <div>
+                <span class="login-sub">Beheeromgeving</span>
+                <h1>Deur<em>Meester</em></h1>
+            </div>
+        </div>
+        <p class="login-intro">Log in om offerteaanvragen te beheren en de website te bewerken.</p>
+        <form id="loginForm">
+            <label class="field-label" for="pw">Wachtwoord</label>
+            <input type="password" id="pw" class="text-input" placeholder="Wachtwoord" autocomplete="current-password"/>
+            <p id="loginError" class="login-error" hidden></p>
+            <button type="submit" class="btn-primary full">Inloggen</button>
+        </form>
+    </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="appView" class="app-view" hidden>
+    <header class="topbar">
+        <div class="topbar-brand">
+            <button id="menuToggle" class="menu-toggle" aria-label="Menu">☰</button>
+            <img src="/images/logo.png" alt=""/>
+            <div>
+                <span class="topbar-sub">Beheeromgeving</span>
+                <strong>DeurMeester</strong>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <a href="/" target="_blank" class="btn-ghost">Bekijk website ↗</a>
+            <button id="logoutBtn" class="btn-ghost">Uitloggen</button>
+        </div>
+    </header>
+
+    <div class="app-shell">
+        <!-- ZIJBALK -->
+        <aside id="sidebar" class="sidebar">
+            <nav class="sidenav">
+                <a href="#dashboard" class="sidenav-item" data-route="dashboard">
+                    <span class="sidenav-ico">▦</span> Dashboard
+                </a>
+                <a href="#aanvragen" class="sidenav-item" data-route="aanvragen">
+                    <span class="sidenav-ico">✉</span> Offerteaanvragen
+                    <span id="navAanvraagCount" class="nav-badge">0</span>
+                </a>
+                <a href="#paginas" class="sidenav-item" data-route="paginas">
+                    <span class="sidenav-ico">▤</span> Pagina's
+                </a>
+                <a href="#agent" class="sidenav-item sidenav-item-featured" data-route="agent">
+                    <span class="sidenav-ico">✦</span> Assistent
+                </a>
+                <a href="#website" class="sidenav-item" data-route="website">
+                    <span class="sidenav-ico">✎</span> Website
+                </a>
+                <a href="#media" class="sidenav-item" data-route="media">
+                    <span class="sidenav-ico">▣</span> Mediabibliotheek
+                </a>
+                <a href="#emails" class="sidenav-item" data-route="emails">
+                    <span class="sidenav-ico">@</span> E-mails
+                </a>
+                <a href="#huisstijl" class="sidenav-item" data-route="huisstijl">
+                    <span class="sidenav-ico">◈</span> Huisstijl
+                </a>
+                <a href="#instellingen" class="sidenav-item" data-route="instellingen">
+                    <span class="sidenav-ico">⚙</span> Instellingen
+                </a>
+            </nav>
+            <div class="sidenav-foot">
+                <a href="/?edit=1" target="_blank" class="btn-primary full small">Start live builder</a>
+            </div>
+        </aside>
+
+        <!-- INHOUD -->
+        <main class="app-main">
+
+            <!-- ===== DASHBOARD ===== -->
+            <section id="view-dashboard" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Overzicht</span>
+                    <h1>Dashboard</h1>
+                    <p class="panel-desc">Welkom terug in de beheeromgeving van DeurMeester.</p>
+                </div>
+
+                <div class="stat-grid">
+                    <div class="stat-card"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Totaal aanvragen</span></div>
+                    <div class="stat-card accent"><span class="stat-num" id="statNew">0</span><span class="stat-label">Nieuw</span></div>
+                    <div class="stat-card"><span class="stat-num" id="statDone">0</span><span class="stat-label">Afgehandeld</span></div>
+                    <div class="stat-card"><span class="stat-num" id="statWeek">0</span><span class="stat-label">Deze week</span></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Recent</span>
+                            <h2>Laatste aanvragen</h2>
+                        </div>
+                        <a href="#aanvragen" class="btn-ghost dark small">Alle aanvragen →</a>
+                    </div>
+                    <div id="recentList" class="aanvragen-list"></div>
+                    <div id="recentEmpty" class="empty-state" hidden>Nog geen offerteaanvragen.</div>
+                </div>
+
+                <div class="quick-row">
+                    <a href="/?edit=1" target="_blank" class="quick-card">
+                        <strong>Start live builder</strong>
+                        <span>Pas teksten en vormgeving van de website aan.</span>
+                    </a>
+                    <a href="/" target="_blank" class="quick-card">
+                        <strong>Bekijk de website ↗</strong>
+                        <span>Open de publieke site in een nieuw tabblad.</span>
+                    </a>
+                </div>
+            </section>
+
+            <!-- ===== OFFERTEAANVRAGEN ===== -->
+            <section id="view-aanvragen" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Configurator</span>
+                    <h1>Offerteaanvragen <span id="aanvraagCount" class="count-badge">0</span></h1>
+                    <p class="panel-desc">Alle deurconfiguraties en offerteaanvragen die via de website binnenkomen.</p>
+                </div>
+
+                <div class="panel">
+                    <div class="toolbar">
+                        <div class="filter-row">
+                            <button class="chip active" data-filter="alle">Alle</button>
+                            <button class="chip" data-filter="nieuw">Nieuw</button>
+                            <button class="chip" data-filter="in_behandeling">In behandeling</button>
+                            <button class="chip" data-filter="behandeld">Afgehandeld</button>
+                            <button class="chip" data-filter="geannuleerd">Geannuleerd</button>
+                        </div>
+                        <div class="toolbar-right">
+                            <input type="search" id="aanvraagSearch" class="text-input search" placeholder="Zoek op naam, e-mail of deurtype…"/>
+                            <a href="/api/aanvragen/export.csv" class="btn-ghost dark small">Exporteer CSV</a>
+                            <button id="refreshBtn" class="btn-ghost dark small" title="Vernieuwen">↻</button>
+                        </div>
+                    </div>
+
+                    <div id="aanvragenList" class="aanvragen-list"></div>
+                    <div id="aanvragenEmpty" class="empty-state" hidden>
+                        Nog geen offerteaanvragen. Configuraties via de website verschijnen hier automatisch.
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== PAGINA'S ===== -->
+            <section id="view-paginas" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Inhoud</span>
+                    <h1>Pagina's</h1>
+                    <p class="panel-desc">Losse webpagina's in de huisstijl. Gepubliceerde pagina's staan live op <code>/p/&lt;slug&gt;</code>.</p>
+                </div>
+                <div class="panel">
+                    <div class="toolbar">
+                        <button id="pageNewBtn" class="btn-primary small">Nieuwe pagina</button>
+                        <button id="pagesRefresh" class="btn-ghost dark small" title="Vernieuwen">↻</button>
+                    </div>
+                    <div id="pagesList" class="pages-list"></div>
+                    <div id="pagesEmpty" class="empty-state" hidden>Nog geen pagina's. <a href="#agent">Vraag de Assistent</a> om je eerste pagina te maken.</div>
+                </div>
+            </section>
+
+            <!-- ===== ASSISTENT ===== -->
+            <section id="view-agent" class="view" hidden>
+                <div class="view-head agent-view-head">
+                    <span class="panel-eyebrow">Jouw website-assistent</span>
+                    <h1>Assistent</h1>
+                    <p class="panel-desc">Vertel wat je wilt — de assistent stelt vragen, toont een voorbeeld en maakt de pagina voor je. Geen technische kennis nodig.</p>
+                </div>
+
+                <div id="agentNotConfigured" class="panel" hidden>
+                    <p class="panel-desc">Stel eerst een API-sleutel in bij <a href="#instellingen">Instellingen</a> om de assistent te gebruiken.</p>
+                </div>
+
+                <div id="agentConfigured" class="panel agent-panel-hero" hidden>
+                    <div class="agent-chat">
+                        <div id="agentWelcome" class="agent-welcome" hidden>
+                            <div class="agent-welcome-icon">✦</div>
+                            <h2>Wat wil je op je website?</h2>
+                            <p>Vertel je idee in gewone taal. De assistent helpt je verder met gerichte vragen en laat zien wat er komt — voordat er iets live gaat.</p>
+                        </div>
+                        <div class="agent-chat-toolbar">
+                            <span id="agentChatMode" class="agent-mode-badge" hidden></span>
+                        </div>
+                        <div id="agentChatSuggestions" class="agent-suggestions" hidden></div>
+                        <div id="agentChatThread" class="agent-thread"></div>
+                        <div id="agentChatThinking" class="agent-thinking" hidden>
+                            <span class="agent-dots"><span></span><span></span><span></span></span>
+                            <span class="agent-thinking-label">Bezig…</span>
+                        </div>
+                        <form id="agentChatForm" class="agent-chat-form">
+                            <textarea id="agentChatInput" class="text-input" rows="3" placeholder="Bijv.: Ik wil een pagina over onderhoud van binnendeuren…"></textarea>
+                            <div class="agent-chat-actions">
+                                <button type="submit" class="btn-primary small" id="agentChatSend">Verstuur</button>
+                                <button type="button" class="btn-ghost dark small" id="agentChatReset">Nieuw gesprek</button>
+                            </div>
+                        </form>
+                        <p id="agentChatStatus" class="agent-status"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== WEBSITE ===== -->
+            <section id="view-website" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Website</span>
+                    <h1>Teksten &amp; vormgeving</h1>
+                    <p class="panel-desc">Bewerk de publieke website rechtstreeks met de live builder.</p>
+                </div>
+                <section class="panel builder-panel">
+                    <div class="panel-head">
+                        <div>
+                            <span class="panel-eyebrow">Live builder</span>
+                            <h2>Bewerk de website live</h2>
+                            <p class="panel-desc">De live builder opent de website in bewerkmodus. Klik op teksten, knoppen, links, kleuren, het logo of de hero-afbeelding om ze direct aan te passen. Wijzigingen worden opgeslagen en zijn meteen zichtbaar voor bezoekers.</p>
+                        </div>
+                        <a href="/?edit=1" target="_blank" class="btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M3 17v4h4l11-11-4-4L3 17z" stroke="currentColor" stroke-width="1.8"/></svg>
+                            Start live builder
+                        </a>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ===== MEDIABIBLIOTHEEK ===== -->
+            <section id="view-media" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Bibliotheek</span>
+                    <h1>Mediabibliotheek</h1>
+                    <p class="panel-desc">Alle afbeeldingen op de site: logo, hero, productfoto's en uploads. Gebruik ze in de live builder of kopieer de URL.</p>
+                </div>
+                <div class="panel">
+                    <div class="toolbar">
+                        <label class="btn-primary small upload-btn">
+                            Afbeelding uploaden
+                            <input type="file" id="mediaUpload" accept="image/*" hidden/>
+                        </label>
+                        <input type="search" id="mediaSearch" class="text-input search" placeholder="Zoek op bestandsnaam of alt-tekst…"/>
+                        <select id="mediaFilter" class="text-input select-inline">
+                            <option value="alle">Alle bronnen</option>
+                            <option value="site">Site-afbeeldingen</option>
+                            <option value="upload">Uploads</option>
+                        </select>
+                        <button id="mediaRefresh" class="btn-ghost dark small" title="Vernieuwen">↻</button>
+                    </div>
+                    <div id="mediaDropZone" class="media-dropzone" hidden>
+                        <span>Sleep een afbeelding hierheen om te uploaden</span>
+                    </div>
+                    <div id="mediaGrid" class="media-grid"></div>
+                    <div id="mediaEmpty" class="empty-state" hidden>Geen afbeeldingen gevonden.</div>
+                </div>
+            </section>
+
+            <!-- ===== E-MAILS ===== -->
+            <section id="view-emails" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Communicatie</span>
+                    <h1>E-mails</h1>
+                    <p class="panel-desc">Beheer de automatische e-mails en bekijk wat er is verstuurd.</p>
+                </div>
+
+                <div class="tabbar">
+                    <button class="tab active" data-tab="outbox">Verzonden e-mails</button>
+                    <button class="tab" data-tab="templates">Sjablonen</button>
+                </div>
+
+                <!-- Postvak -->
+                <div id="tab-outbox" class="tab-pane">
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div><h2>Postvak</h2><p class="panel-desc">Elk verzonden of gepoogd bericht wordt hier gelogd.</p></div>
+                            <button id="emailsRefresh" class="btn-ghost dark small">↻ Vernieuwen</button>
+                        </div>
+                        <div id="outboxList" class="email-list"></div>
+                        <div id="outboxEmpty" class="empty-state" hidden>Nog geen e-mails. Zodra er een offerteaanvraag binnenkomt, verschijnen berichten hier.</div>
+                    </div>
+                </div>
+
+                <!-- Sjablonen -->
+                <div id="tab-templates" class="tab-pane" hidden>
+                    <div class="panel">
+                        <div class="panel-head">
+                            <div>
+                                <h2>Sjablonen</h2>
+                                <p class="panel-desc">Bewerk de automatische e-mails. Gebruik variabelen zoals
+                                    <code>{{name}}</code> die bij het versturen worden ingevuld.</p>
+                            </div>
+                            <select id="templateSelect" class="text-input select-inline">
+                                <option value="booking_confirmation">Bevestiging aan de klant</option>
+                                <option value="booking_notification">Melding aan DeurMeester</option>
+                            </select>
+                        </div>
+
+                        <div class="tpl-editor">
+                            <div class="tpl-fields">
+                                <label class="field-label">Onderwerp</label>
+                                <input type="text" id="tplSubject" class="text-input"/>
+                                <label class="field-label">HTML-inhoud</label>
+                                <textarea id="tplHtml" class="text-input code-area" rows="16"></textarea>
+                                <p class="var-hint">Beschikbare variabelen:
+                                    <code>{{name}}</code> <code>{{email}}</code> <code>{{phone}}</code>
+                                    <code>{{deurType}}</code> <code>{{materiaal}}</code> <code>{{afmetingen}}</code>
+                                    <code>{{afwerking}}</code> <code>{{montage}}</code> <code>{{notes}}</code>
+                                    <code>{{id}}</code> <code>{{siteName}}</code>
+                                </p>
+                                <button id="tplSave" class="btn-primary small">Sjabloon opslaan</button>
+                            </div>
+                            <div class="tpl-preview">
+                                <span class="field-label">Voorbeeld (met testwaarden)</span>
+                                <div class="preview-subject" id="tplPreviewSubject"></div>
+                                <iframe id="tplPreviewFrame" class="preview-frame" title="Voorbeeld"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== HUISSTIJL ===== -->
+            <section id="view-huisstijl" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Stijlgids</span>
+                    <h1>Huisstijl</h1>
+                    <p class="panel-desc">De vastgelegde huisstijl die de AI-agent gebruikt om pagina's in stijl te maken.</p>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-head">
+                        <div><h2>Kleuren</h2><p class="panel-desc">De kleur-tokens uit de website. Voer een geldige CSS-kleur in (bijv. <code>#b8693a</code>).</p></div>
+                        <button id="sgSync" class="btn-ghost dark small">Sync uit website</button>
+                    </div>
+                    <div id="sgTokens" class="sg-tokens"></div>
+                </div>
+
+                <div class="panel">
+                    <h2>Fonts</h2>
+                    <div class="form-grid">
+                        <div><label class="field-label">Koppen (heading)</label><input class="text-input" id="sgFontHeading"/></div>
+                        <div><label class="field-label">Body</label><input class="text-input" id="sgFontBody"/></div>
+                        <div><label class="field-label">Accent</label><input class="text-input" id="sgFontAccent"/></div>
+                        <div><label class="field-label">Basis-CSS</label><input class="text-input" id="sgBaseCss"/></div>
+                        <div class="span2"><label class="field-label">Google Fonts href</label><input class="text-input" id="sgFontsHref"/></div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h2>Tone of voice</h2>
+                    <p class="panel-desc">Hoe de teksten klinken. Deze regels gaan letterlijk mee in de AI-prompt.</p>
+                    <textarea id="sgVoice" class="text-input" rows="7"></textarea>
+                </div>
+
+                <div class="panel">
+                    <h2>Componenten</h2>
+                    <p class="panel-desc">Welke herbruikbare classes uit <code>site-base.css</code> beschikbaar zijn.</p>
+                    <textarea id="sgComponents" class="text-input code-area" rows="12"></textarea>
+                </div>
+
+                <div class="panel">
+                    <h2>Richtlijnen</h2>
+                    <p class="panel-desc">Do's en don'ts voor de opbouw van een pagina.</p>
+                    <textarea id="sgGuidelines" class="text-input" rows="8"></textarea>
+                    <div class="settings-actions">
+                        <button id="sgSave" class="btn-primary small">Opslaan</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ===== INSTELLINGEN ===== -->
+            <section id="view-instellingen" class="view" hidden>
+                <div class="view-head">
+                    <span class="panel-eyebrow">Configuratie</span>
+                    <h1>Instellingen</h1>
+                    <p class="panel-desc">Bedrijfsgegevens en e-mailinstellingen.</p>
+                </div>
+
+                <form id="settingsForm">
+                    <div class="panel">
+                        <h2>Bedrijfsgegevens</h2>
+                        <div class="form-grid">
+                            <div><label class="field-label">Bedrijfsnaam</label><input class="text-input" name="bedrijfsnaam"/></div>
+                            <div><label class="field-label">Tagline</label><input class="text-input" name="tagline"/></div>
+                            <div><label class="field-label">Contact-e-mail</label><input class="text-input" name="contactEmail" type="email"/></div>
+                            <div><label class="field-label">Telefoon</label><input class="text-input" name="telefoon"/></div>
+                            <div class="span2"><label class="field-label">Adres</label><input class="text-input" name="adres"/></div>
+                            <div class="span2"><label class="field-label">Meldingen naar (e-mail voor nieuwe offerteaanvragen)</label><input class="text-input" name="meldingsEmail" type="email"/></div>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>SMTP (uitgaande e-mail)</h2>
+                        <p class="panel-desc">Vul deze gegevens in om e-mails echt te versturen. Zonder SMTP worden berichten alleen in het postvak bewaard.</p>
+                        <div class="form-grid">
+                            <div><label class="field-label">Host</label><input class="text-input" name="smtp.host" placeholder="bijv. smtp.gmail.com"/></div>
+                            <div><label class="field-label">Poort</label><input class="text-input" name="smtp.port" type="number" placeholder="587"/></div>
+                            <div class="check-field">
+                                <label class="switch"><input type="checkbox" name="smtp.secure"/><span>Beveiligd (SSL/TLS, poort 465)</span></label>
+                            </div>
+                            <div></div>
+                            <div><label class="field-label">Gebruikersnaam</label><input class="text-input" name="smtp.user"/></div>
+                            <div><label class="field-label">Wachtwoord</label><input class="text-input" name="smtp.pass" type="password" autocomplete="new-password"/></div>
+                            <div><label class="field-label">Afzendernaam</label><input class="text-input" name="smtp.fromNaam"/></div>
+                            <div><label class="field-label">Afzenderadres</label><input class="text-input" name="smtp.fromAdres" type="email"/></div>
+                        </div>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary small">Instellingen opslaan</button>
+                            <button type="button" id="testEmailBtn" class="btn-ghost dark small">Test-e-mail versturen</button>
+                        </div>
+                    </div>
+
+                    <div class="panel">
+                        <h2>AI-assistent</h2>
+                        <p class="panel-desc">Koppel een AI-provider (Kimi via Moonshot of OpenRouter). De assistent helpt bij vragen en maakt pagina's op verzoek. Voor HTML-generatie wordt een apart model gebruikt (bijv. Claude Opus via OpenRouter).</p>
+                        <div class="form-grid">
+                            <div><label class="field-label">Koppeling</label>
+                                <select class="text-input" name="ai.provider" id="aiProvider">
+                                    <option value="kimi">Kimi (Moonshot direct)</option>
+                                    <option value="openrouter">OpenRouter</option>
+                                </select>
+                            </div>
+                            <div></div>
+                            <div class="span2"><label class="field-label">API-sleutel</label><input class="text-input" name="ai.apiKey" type="password" autocomplete="new-password" placeholder="sk-..."/></div>
+                            <div><label class="field-label">Base URL</label><input class="text-input" name="ai.baseUrl" placeholder="https://openrouter.ai/api/v1"/></div>
+                            <div><label class="field-label">Chatmodel</label>
+                                <select class="text-input" id="aiModelSelect"></select>
+                            </div>
+                            <div class="span2" id="aiModelCustomWrap" hidden><label class="field-label">Aangepast chatmodel</label><input class="text-input" name="ai.model" placeholder="moonshotai/kimi-k2.6"/></div>
+                            <div class="span2"><label class="field-label">Pagina-bouwer model</label><input class="text-input" name="ai.pageBuilderModel" placeholder="anthropic/claude-opus-4.7"/><p class="field-hint">Gebruikt voor het genereren van pagina-HTML (aanbevolen: anthropic/claude-opus-4.7 via OpenRouter).</p></div>
+                        </div>
+                        <p class="panel-desc" id="aiProviderHint" style="margin-top:.5rem;"></p>
+                        <div class="settings-actions">
+                            <button type="submit" class="btn-primary small">Instellingen opslaan</button>
+                            <button type="button" id="aiTestBtn" class="btn-ghost dark small">Verbinding testen</button>
+                            <span id="aiTestStatus" class="agent-status"></span>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<!-- E-mail preview modal -->
+<div id="emailModal" class="modal" hidden>
+    <div class="modal-card">
+        <div class="modal-head">
+            <div>
+                <div id="emailModalSubject" class="modal-subject"></div>
+                <div id="emailModalMeta" class="modal-meta"></div>
+            </div>
+            <button id="emailModalClose" class="modal-close">✕</button>
+        </div>
+        <iframe id="emailModalFrame" class="modal-frame" title="E-mail"></iframe>
+    </div>
+</div>
+
+<!-- Pagina-editor modal -->
+<div id="pageModal" class="modal" hidden>
+    <div class="modal-card modal-wide">
+        <div class="modal-head">
+            <div>
+                <div class="modal-subject" id="pageModalTitle">Pagina bewerken</div>
+                <div class="modal-meta" id="pageModalMeta"></div>
+            </div>
+            <button id="pageModalClose" class="modal-close">✕</button>
+        </div>
+        <div class="page-editor">
+            <div class="form-grid">
+                <div><label class="field-label">Titel</label><input class="text-input" id="pageTitle"/></div>
+                <div><label class="field-label">Slug (url)</label><input class="text-input" id="pageSlug" placeholder="bijv. contact"/></div>
+                <div><label class="field-label">Status</label>
+                    <select class="text-input" id="pageStatus">
+                        <option value="concept">Concept</option>
+                        <option value="gepubliceerd">Gepubliceerd</option>
+                    </select>
+                </div>
+                <div><label class="field-label">Menulabel (indien in menu)</label><input class="text-input" id="pageMenuLabel" placeholder="bv. Contact"/></div>
+                <div class="span2 check-field">
+                    <label class="switch"><input type="checkbox" id="pageInMenu"/><span>In hoofdmenu tonen</span></label>
+                </div>
+                <div class="pe-open"><label class="field-label">&nbsp;</label><a id="pageOpenLink" class="btn-ghost dark small" target="_blank" href="#">Bekijk live ↗</a></div>
+                <div class="pe-open"><label class="field-label">&nbsp;</label><a id="pageBuilderLink" class="btn-ghost dark small" target="_blank" href="#">Bewerk met live builder ↗</a></div>
+            </div>
+            <label class="field-label">HTML (body-inhoud)</label>
+            <textarea id="pageHtml" class="text-input code-area" rows="16"></textarea>
+            <div class="settings-actions">
+                <button id="pageSave" class="btn-primary small">Opslaan</button>
+                <button id="pageModalCancel" class="btn-ghost dark small">Annuleren</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="/admin/admin.js"></script>
+</body>
+</html>

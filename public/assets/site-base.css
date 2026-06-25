@@ -1,0 +1,529 @@
+/* =====================================================
+   DeurMeester - basis-stylesheet voor losse pagina's
+   -----------------------------------------------------
+   Overgenomen uit public/index.html zodat elke pagina die
+   deze CSS linkt automatisch in de huisstijl staat.
+   Bevat: tokens, reset/typografie, nav, footer en een set
+   herbruikbare componenten (container, secties, koppen,
+   knoppen, kaarten). De beschikbare classes staan
+   gedocumenteerd in de stijlgids (admin > Huisstijl).
+===================================================== */
+
+/* Fonts ook hier importeren zodat de CSS los bruikbaar is.
+   In het paginaskelet staat daarnaast de Google Fonts <link>. */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@500;700&display=swap');
+
+/* =====================================================
+   1. TOKENS (1-op-1 uit index.html)
+===================================================== */
+:root {
+    --ink:        #1e1e1e;
+    --ink-soft:   #3a3a3a;
+    --paper:      #faf8f5;
+    --paper-warm: #f0ebe3;
+    --paper-deep: #e5ddd2;
+    --sage:       #5c4a3a;
+    --sage-deep:  #2a2420;
+    --sage-light: #c9b59a;
+    --copper:     #a67c52;
+    --copper-hot: #8f6639;
+    --copper-soft:#d4b896;
+    --stone:      #7a7168;
+    --line:       rgba(30, 30, 30, 0.12);
+    --line-strong:rgba(30, 30, 30, 0.28);
+}
+
+/* =====================================================
+   2. RESET & BASE
+===================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { overflow-wrap: break-word; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Libre Caslon Text', 'Times New Roman', serif;
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+}
+h1 em, h2 em, h3 em, h4 em { font-style: italic; color: var(--copper); }
+
+p { text-wrap: pretty; }
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* =====================================================
+   3. TYPOGRAFIE-HELPERS
+===================================================== */
+.serif  { font-family: 'Libre Caslon Text', 'Times New Roman', serif; font-weight: 400; }
+.script { font-family: 'Caveat', cursive; font-weight: 500; }
+
+.eyebrow, .mono-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--copper);
+    display: inline-block;
+}
+
+.lead {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: clamp(20px, 2.4vw, 26px);
+    line-height: 1.5;
+    color: var(--ink);
+}
+
+/* =====================================================
+   4. LAYOUT: CONTAINER & SECTIES
+===================================================== */
+.container      { max-width: 1100px; margin: 0 auto; padding: 0 5vw; position: relative; }
+.container-wide { max-width: 1440px; margin: 0 auto; padding: 0 5vw; position: relative; }
+
+.section { padding: 7rem 5vw; background: var(--paper); position: relative; }
+.section.section-warm { background: var(--paper-warm); }
+.section.section-deep { background: var(--paper-deep); }
+.section.section-ink  { background: var(--ink);  color: var(--paper); }
+.section.section-sage { background: var(--sage-deep); color: var(--paper); }
+/* Op donkere secties koppen/eyebrow leesbaar houden */
+.section-ink h1, .section-ink h2, .section-ink h3, .section-ink h4,
+.section-sage h1, .section-sage h2, .section-sage h3, .section-sage h4 { color: var(--paper); }
+.section-ink .lead, .section-sage .lead { color: rgba(245, 237, 224, 0.92); }
+.section-ink .eyebrow, .section-sage .eyebrow { color: var(--copper-soft); }
+
+/* Eenvoudige tweekoloms-opbouw */
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+
+/* Kop van een sectie */
+.section-head { max-width: 720px; margin: 0 auto 3.5rem; text-align: center; }
+.section-head h2 { font-size: clamp(32px, 4.5vw, 56px); margin: 0.6rem 0 0; }
+.section-head p { margin-top: 1rem; color: var(--ink-soft); }
+.section-ink .section-head p, .section-sage .section-head p { color: rgba(245, 237, 224, 0.8); }
+
+/* =====================================================
+   5. PAGINA-INTRO (compacte hero zonder achtergrondfoto)
+===================================================== */
+.page-hero {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 5vw 5rem;
+    text-align: center;
+    position: relative;
+}
+.page-hero .eyebrow { color: var(--copper-soft); }
+.page-hero h1 {
+    font-size: clamp(34px, 6vw, 72px);
+    line-height: 1.04;
+    margin: 1rem auto 0;
+    max-width: 14ch;
+    color: var(--paper);
+}
+.page-hero h1 em { color: var(--copper-hot); }
+.page-hero .page-hero-sub {
+    max-width: 600px;
+    margin: 1.5rem auto 0;
+    color: rgba(245, 237, 224, 0.9);
+    font-size: 16px;
+}
+.page-hero .script {
+    display: block;
+    margin-top: 0.75rem;
+    color: var(--copper-soft);
+    font-size: clamp(26px, 3.5vw, 40px);
+    transform: rotate(-2deg);
+}
+
+/* =====================================================
+   6. KNOPPEN
+===================================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.6rem;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.35s;
+    cursor: pointer;
+    background: var(--sage-deep);
+    color: var(--paper);
+}
+.btn:hover { transform: translateY(-2px); }
+
+/* Primaire/koperen call-to-action */
+.btn.cta, .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1rem 1.9rem;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--copper);
+    color: var(--paper);
+    transition: all 0.35s;
+    cursor: pointer;
+}
+.cta:hover, .btn.cta:hover { background: var(--ink); transform: translateY(-2px); }
+
+/* Subtiele tekstlink met streep, zoals .ruimte-link op de site */
+.btn-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    border-bottom: 1px solid var(--copper);
+    padding-bottom: 4px;
+    transition: gap 0.35s, color 0.35s;
+}
+.btn-link:hover { color: var(--copper); gap: 1.1rem; }
+.section-ink .btn-link, .section-sage .btn-link { color: var(--copper-soft); }
+
+/* =====================================================
+   7. KAARTEN
+===================================================== */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+.card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 2rem 1.9rem;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.5s;
+}
+.card:hover { transform: translateY(-6px); box-shadow: 0 28px 56px -22px rgba(0,0,0,0.2); }
+.card h3 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 0.5rem; }
+.card .script { color: var(--stone); font-size: 22px; display: block; margin-bottom: 1rem; }
+.card p { font-size: 14px; line-height: 1.7; color: var(--ink-soft); margin-bottom: 1.25rem; }
+.card p:last-child { margin-bottom: 0; }
+.section-ink .card, .section-sage .card {
+    background: rgba(245, 237, 224, 0.04);
+    border-color: rgba(245, 237, 224, 0.16);
+}
+.section-ink .card p, .section-sage .card p { color: rgba(245, 237, 224, 0.78); }
+
+/* Kaart met foto bovenaan */
+.card.card-photo { padding: 0; overflow: hidden; }
+.card.card-photo img { width: 100%; aspect-ratio: 4/3; object-fit: cover; }
+.card.card-photo .card-body { padding: 1.75rem 1.75rem 2rem; }
+
+/* Lijstje met een koperen stip ervoor (zoals .pillar) */
+.feature-list { list-style: none; display: grid; gap: 0.25rem; }
+.feature-list li {
+    padding: 1rem 0;
+    border-top: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 14px;
+    color: var(--ink-soft);
+}
+.feature-list li::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--copper);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Citaat met koperen rand, zoals .filosofie-quote */
+.quote {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(24px, 3.2vw, 40px);
+    line-height: 1.2;
+    color: var(--ink);
+    padding-left: 2rem;
+    border-left: 3px solid var(--copper);
+}
+.quote em { font-style: italic; color: var(--copper); }
+.section-ink .quote, .section-sage .quote { color: var(--paper); }
+
+/* Donker uitgelicht blok (callout), zoals .bnb-callout */
+.callout {
+    background: var(--sage-deep);
+    color: var(--paper);
+    padding: 3rem;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+}
+.callout h3, .callout h4 { color: var(--paper); }
+.callout p { color: rgba(245, 237, 224, 0.85); max-width: 560px; font-size: 14px; }
+.callout .eyebrow { color: var(--copper-soft); }
+
+/* =====================================================
+   8. TOP CONTACT STRIP (uit index.html)
+===================================================== */
+.topstrip {
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    padding: 0.6rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 90;
+}
+.topstrip-left { display: flex; gap: 1.5rem; align-items: center; opacity: 0.85; }
+.topstrip-left span { display: flex; align-items: center; gap: 0.5rem; }
+.topstrip-right { display: flex; gap: 1.25rem; align-items: center; opacity: 0.85; }
+.topstrip-right a:hover { color: var(--copper-soft); }
+.topstrip-dot { width: 4px; height: 4px; background: var(--copper-hot); border-radius: 50%; }
+
+/* =====================================================
+   9. NAVIGATIE (uit index.html)
+===================================================== */
+nav.global {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    background: var(--paper);
+    padding: 1.25rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+}
+.nav-logo {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 22px;
+    color: var(--sage-deep);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+.nav-logo img { height: 42px; width: auto; transition: transform 0.7s ease; }
+.nav-logo:hover img { transform: rotate(180deg); }
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.nav-links a { color: var(--ink-soft); position: relative; padding-bottom: 4px; }
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--copper);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-links a:hover { color: var(--copper); }
+.nav-links a:hover::after { width: 100%; }
+.nav-cta {
+    background: var(--sage-deep);
+    color: var(--paper) !important;
+    padding: 0.75rem 1.4rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    transition: all 0.4s;
+}
+.nav-cta:hover { background: var(--copper); }
+
+.mobile-toggle {
+    display: none;
+    width: 44px; height: 44px;
+    position: relative;
+    flex-shrink: 0;
+}
+.mobile-toggle span {
+    position: absolute;
+    left: 8px; right: 8px;
+    height: 2px;
+    background: var(--ink);
+    transition: all 0.3s;
+}
+.mobile-toggle span:nth-child(1) { top: 14px; }
+.mobile-toggle span:nth-child(2) { top: 21px; }
+.mobile-toggle span:nth-child(3) { top: 28px; }
+nav.global.nav-open .mobile-toggle span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+nav.global.nav-open .mobile-toggle span:nth-child(2) { opacity: 0; }
+nav.global.nav-open .mobile-toggle span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+
+.mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    background: rgba(26, 23, 20, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+.mobile-nav.open { opacity: 1; visibility: visible; }
+.mobile-nav-panel {
+    position: absolute;
+    top: 0; right: 0;
+    width: min(320px, 88vw);
+    height: 100%;
+    background: var(--paper);
+    padding: 5.5rem 2rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.15);
+}
+.mobile-nav.open .mobile-nav-panel { transform: translateX(0); }
+.mobile-nav-links { display: flex; flex-direction: column; }
+.mobile-nav-links a {
+    display: block;
+    padding: 1rem 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+}
+.mobile-nav-links a:hover { color: var(--copper); }
+.mobile-nav-cta {
+    display: block;
+    margin-top: 1.5rem;
+    text-align: center;
+    background: var(--sage-deep);
+    color: var(--paper) !important;
+    padding: 1rem 1.5rem;
+    border-radius: 100px;
+    border-bottom: none !important;
+}
+
+/* =====================================================
+   10. FOOTER (uit index.html)
+===================================================== */
+footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 5vw 2rem;
+    position: relative;
+}
+.footer-grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(245, 237, 224, 0.1);
+}
+.footer-logo { height: 64px; width: auto; margin-bottom: 1.25rem; filter: brightness(0) invert(1); opacity: 0.92; }
+.footer-brand h4 { font-family: 'Libre Caslon Text', serif; font-size: 32px; margin-bottom: 1rem; font-weight: 400; color: var(--paper); }
+.footer-brand p {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: rgba(245, 237, 224, 0.7);
+    max-width: 320px;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+.footer-contact { font-size: 13px; color: rgba(245, 237, 224, 0.75); line-height: 1.8; }
+.footer-contact a:hover { color: var(--copper-hot); }
+.footer-col strong {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--copper-soft);
+    display: block;
+    margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.75rem; }
+.footer-col a { color: rgba(245, 237, 224, 0.7); font-size: 14px; transition: color 0.3s; }
+.footer-col a:hover { color: var(--copper-hot); }
+.footer-bottom {
+    max-width: 1440px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(245, 237, 224, 0.4);
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* =====================================================
+   11. NETTE 404 / LEEG-STATE
+===================================================== */
+.page-status {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 5vw;
+}
+.page-status h1 { font-size: clamp(40px, 8vw, 96px); color: var(--copper); }
+.page-status p { margin: 1rem 0 2rem; color: var(--ink-soft); max-width: 460px; }
+
+/* =====================================================
+   12. RESPONSIVE
+===================================================== */
+@media (max-width: 1024px) {
+    .split { grid-template-columns: 1fr; gap: 3rem; }
+    .callout { grid-template-columns: 1fr; text-align: center; }
+    .callout .cta { width: 100%; justify-content: center; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+}
+@media (max-width: 768px) {
+    .section, .page-hero { padding: 5rem 5vw; }
+    .card-grid { grid-template-columns: 1fr; }
+    .btn, .cta { min-height: 44px; }
+}
+@media (max-width: 640px) {
+    .nav-links, .nav-cta { display: none; }
+    .mobile-toggle { display: block; }
+    .topstrip-left { display: none; }
+    .topstrip { flex-wrap: wrap; justify-content: center; text-align: center; gap: 0.5rem; }
+    .topstrip-right { font-size: 10px; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .nav-logo { font-size: 18px; }
+    .nav-logo img { height: 36px; }
+    .section, .page-hero { padding: 4rem 5vw; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .container, .container-wide { padding: 0 4vw; }
+}

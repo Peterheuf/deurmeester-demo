@@ -1,0 +1,22 @@
+# Render Blueprint — DeurMeester demo CMS
+# https://render.com/docs/blueprint-spec
+services:
+  - type: web
+    name: deurmeester-demo
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: ADMIN_PASSWORD
+        value: democms
+      - key: SESSION_SECRET
+        generateValue: true
+      # Optioneel: zet in Render-dashboard na deploy (Environment)
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: PUBLIC_URL
+        sync: false

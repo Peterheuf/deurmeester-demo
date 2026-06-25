@@ -1,0 +1,68 @@
+/** Stijlen voor de herbruikbare deurconfigurator (tokens uit site-base.css). */
+.booking-card { max-width: 1100px; margin: 0 auto; background: var(--paper); color: var(--ink); border-radius: 8px; overflow: hidden; box-shadow: 0 20px 60px -20px rgba(0,0,0,0.35); }
+.booking-progress { display: grid; grid-template-columns: repeat(6, 1fr); background: var(--ink); color: var(--paper); }
+.booking-step { padding: 0.85rem 0.75rem; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; border-right: 1px solid rgba(247,244,240,0.1); opacity: 0.5; cursor: pointer; }
+.booking-step:last-child { border-right: none; }
+.booking-step .step-num { width: 22px; height: 22px; border: 1px solid currentColor; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+.booking-step.active { opacity: 1; background: var(--sage-deep); }
+.booking-step.active .step-num, .booking-step.completed .step-num { background: var(--copper); border-color: var(--copper); color: var(--paper); }
+.config-live-summary { background: var(--paper-warm); border-bottom: 1px solid var(--line); padding: 0.85rem 1.25rem; font-size: 13px; color: var(--ink-soft); }
+.config-live-summary strong { color: var(--ink); font-weight: 600; display: block; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.25rem; }
+.booking-body { padding: 2rem; min-height: 320px; }
+.booking-pane { display: none; }
+.booking-pane.active { display: block; }
+.booking-pane h3 { font-family: 'Libre Caslon Text', serif; font-size: 28px; margin-bottom: 0.5rem; font-weight: 400; }
+.booking-pane h3 em { font-style: italic; color: var(--copper); }
+.booking-pane > p { font-size: 14px; color: var(--ink-soft); margin-bottom: 1.5rem; }
+.type-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.type-options.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.type-option { border: 2px solid var(--line); padding: 1.25rem; border-radius: 6px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.type-option:hover, .type-option.selected { border-color: var(--copper); background: rgba(166,124,82,0.06); }
+.type-option h4 { font-family: 'Libre Caslon Text', serif; font-size: 17px; margin-bottom: 0.35rem; }
+.type-option p { font-size: 12px; color: var(--ink-soft); line-height: 1.45; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-field label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--stone); margin-bottom: 0.4rem; display: block; }
+.form-field input, .form-field select, .form-field textarea { width: 100%; background: var(--paper-warm); border: 1px solid var(--line); padding: 0.75rem; border-radius: 4px; font-size: 14px; }
+.montage-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.montage-option { display: block; border: 2px solid var(--line); padding: 1.25rem; border-radius: 6px; cursor: pointer; transition: border-color 0.2s; }
+.montage-option:has(input:checked) { border-color: var(--copper); background: rgba(166,124,82,0.06); }
+.montage-option input { margin-right: 0.5rem; accent-color: var(--copper); }
+.montage-option strong { display: block; font-size: 15px; margin-bottom: 0.25rem; }
+.montage-option small { font-size: 12px; color: var(--ink-soft); }
+.summary { background: var(--paper-warm); border: 1px solid var(--line); border-radius: 6px; padding: 1.25rem; margin: 1.5rem 0; }
+.summary h4 { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--stone); margin-bottom: 0.75rem; }
+.summary-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.4rem 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.summary-row:last-child { border-bottom: none; }
+.summary-row span:first-child { color: var(--ink-soft); }
+.booking-actions { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; }
+.btn-prev, .btn-next { padding: 0.85rem 1.5rem; border-radius: 4px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; font-family: inherit; min-height: 44px; }
+.btn-prev { background: transparent; color: var(--ink-soft); border: 1px solid var(--line); }
+.btn-prev:disabled { opacity: 0.4; cursor: default; }
+.btn-next { background: var(--copper); color: var(--paper); }
+.btn-next:hover { background: var(--copper-hot); }
+.booking-success { text-align: center; padding: 3rem 1rem; }
+.booking-success .check { width: 56px; height: 56px; border-radius: 50%; background: var(--sage); color: var(--paper); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 1rem; }
+.hero-configurator { max-width: 960px; margin: 0 auto; }
+.hero-configurator .booking-body { padding: 1.5rem; min-height: 280px; }
+.hero-configurator .booking-pane h3 { font-size: 24px; }
+.hero-configurator-label { display: inline-block; background: var(--copper); color: var(--paper); padding: 0.35rem 1rem; font-size: 10px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; border-radius: 100px; margin-bottom: 0.75rem; }
+@media (max-width: 900px) {
+    .booking-progress { grid-template-columns: repeat(6, 1fr); }
+    .booking-step span:not(.step-num) { display: none; }
+    .booking-step { justify-content: center; padding: 0.75rem 0.35rem; }
+    .type-options { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+    .type-options, .form-row, .montage-options { grid-template-columns: 1fr; }
+    .booking-body { padding: 1.25rem; min-height: auto; }
+    .booking-pane h3 { font-size: 24px; }
+    .booking-actions { flex-direction: column-reverse; align-items: stretch; }
+    .btn-prev, .btn-next { width: 100%; justify-content: center; }
+    .montage-option { min-height: 44px; }
+    .type-option { min-height: 44px; }
+}
+@media (max-width: 480px) {
+    .booking-step .step-num { width: 22px; height: 22px; font-size: 10px; }
+    .hero-configurator { margin: 0 -0.25rem; }
+    .hero-configurator-label { font-size: 9px; letter-spacing: 0.2em; }
+}

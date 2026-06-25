@@ -1,0 +1,2509 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DeurMeester · Binnendeuren op maat — advies, levering &amp; montage</title>
+<meta name="description" content="DeurMeester levert binnendeuren op maat: taatsdeuren, schuifdeuren, opdekdeuren en meer. Vakmanschap, materialen van topkwaliteit en professionele montage in heel Nederland."/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/booking-widget.css"/>
+
+<style>
+:root {
+    --ink:        #1e1e1e;
+    --ink-soft:   #3a3a3a;
+    --paper:      #faf8f5;
+    --paper-warm: #f0ebe3;
+    --paper-deep: #e5ddd2;
+    --sage:       #5c4a3a;
+    --sage-deep:  #2a2420;
+    --sage-light: #c9b59a;
+    --copper:     #a67c52;
+    --copper-hot: #8f6639;
+    --copper-soft:#d4b896;
+    --stone:      #7a7168;
+    --line:       rgba(30, 30, 30, 0.12);
+    --line-strong:rgba(30, 30, 30, 0.28);
+}
+
+/* =====================================================
+   2. RESET & BASE
+===================================================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+*, *::before, *::after { overflow-wrap: break-word; }
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    hyphens: none;
+    -webkit-hyphens: none;
+    text-wrap: balance;
+    word-break: keep-all;
+}
+p { text-wrap: pretty; }
+
+img { max-width: 100%; height: auto; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; border: none; background: none; cursor: pointer; color: inherit; }
+input, select, textarea { font-family: inherit; font-size: inherit; }
+
+/* Subtle paper grain over everything */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.5;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =====================================================
+   3. TYPOGRAPHY
+===================================================== */
+.serif { font-family: 'Libre Caslon Text', 'Times New Roman', serif; font-weight: 400; }
+.script { font-family: 'Caveat', cursive; font-weight: 500; }
+
+.mono-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+}
+
+.section-num {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+/* =====================================================
+   4. LAYOUT
+===================================================== */
+.wrap { max-width: 1440px; margin: 0 auto; padding: 0 5vw; position: relative; }
+.wrap-narrow { max-width: 1200px; margin: 0 auto; padding: 0 5vw; position: relative; }
+
+/* =====================================================
+   5. MODEL BADGE
+===================================================== */
+.model-badge {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 200;
+    background: rgba(26, 23, 20, 0.75);
+    color: var(--paper);
+    padding: 0.4rem 0.8rem;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0.55;
+    transition: opacity 0.3s;
+    pointer-events: auto;
+}
+.model-badge:hover { opacity: 1; }
+@media (max-width: 640px) { .model-badge { display: none; } }
+
+/* =====================================================
+   6. TOP CONTACT STRIP
+===================================================== */
+.topstrip {
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    padding: 0.6rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 90;
+}
+.topstrip-left { display: flex; gap: 1.5rem; align-items: center; opacity: 0.85; }
+.topstrip-left span { display: flex; align-items: center; gap: 0.5rem; }
+.topstrip-right { display: flex; gap: 1.25rem; align-items: center; opacity: 0.85; }
+.topstrip-right a:hover { color: var(--copper-soft); }
+.topstrip-dot { width: 4px; height: 4px; background: var(--copper-hot); border-radius: 50%; }
+
+/* =====================================================
+   7. NAVIGATION
+===================================================== */
+nav.global {
+    position: sticky;
+    top: 0;
+    z-index: 80;
+    background: var(--paper);
+    padding: 1.25rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s, box-shadow 0.4s;
+}
+nav.global.scrolled { padding: 0.75rem 5vw; box-shadow: 0 4px 30px -10px rgba(0,0,0,0.15); }
+
+.nav-logo {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 22px;
+    color: var(--sage-deep);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+.nav-logo img {
+    height: 42px;
+    width: auto;
+    transition: transform 0.7s ease;
+}
+.nav-logo:hover img { transform: rotate(180deg); }
+nav.global.scrolled .nav-logo img { height: 34px; }
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+.nav-links a {
+    color: var(--ink-soft);
+    position: relative;
+    padding-bottom: 4px;
+}
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--copper);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-links a:hover { color: var(--copper); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+    background: var(--sage-deep);
+    color: var(--paper) !important;
+    padding: 0.75rem 1.4rem;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+.nav-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--copper);
+    transform: translateX(-101%);
+    transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: -1;
+}
+.nav-cta:hover::before { transform: translateX(0); }
+
+.mobile-toggle {
+    display: none;
+    width: 32px; height: 24px;
+    position: relative;
+}
+.mobile-toggle span {
+    position: absolute;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--ink);
+    transition: all 0.3s;
+}
+.mobile-toggle span:nth-child(1) { top: 4px; }
+.mobile-toggle span:nth-child(2) { top: 11px; }
+.mobile-toggle span:nth-child(3) { top: 18px; }
+nav.global.nav-open .mobile-toggle span:nth-child(1) { top: 11px; transform: rotate(45deg); }
+nav.global.nav-open .mobile-toggle span:nth-child(2) { opacity: 0; }
+nav.global.nav-open .mobile-toggle span:nth-child(3) { top: 11px; transform: rotate(-45deg); }
+
+.mobile-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 95;
+    background: rgba(26, 23, 20, 0.55);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+}
+.mobile-nav.open { opacity: 1; visibility: visible; }
+.mobile-nav-panel {
+    position: absolute;
+    top: 0; right: 0;
+    width: min(320px, 88vw);
+    height: 100%;
+    background: var(--paper);
+    padding: 5.5rem 2rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    box-shadow: -12px 0 40px rgba(0,0,0,0.15);
+}
+.mobile-nav.open .mobile-nav-panel { transform: translateX(0); }
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+.mobile-nav-links a {
+    display: block;
+    padding: 1rem 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--line);
+}
+.mobile-nav-links a:hover { color: var(--copper); }
+.mobile-nav-cta {
+    display: block;
+    margin-top: 1.5rem;
+    text-align: center;
+    background: var(--sage-deep);
+    color: var(--paper) !important;
+    padding: 1rem 1.5rem;
+    border-radius: 100px;
+    border-bottom: none !important;
+}
+
+/* =====================================================
+   8. HERO
+===================================================== */
+.hero {
+    position: relative;
+    min-height: 92vh;
+    padding: 5rem 5vw 3rem;
+    overflow: hidden;
+    color: var(--paper);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.hero-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    animation: slowZoom 25s ease-out forwards;
+    filter: brightness(0.78) contrast(1.08) saturate(0.85);
+}
+@keyframes slowZoom { to { transform: scale(1); } }
+.hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,23,20,0.55) 0%, rgba(26,23,20,0.4) 50%, rgba(26,23,20,0.92) 100%);
+}
+
+.hero-corner-tl, .hero-corner-tr, .hero-corner-bl, .hero-corner-br {
+    position: absolute;
+    width: 60px; height: 60px;
+    z-index: 4;
+    opacity: 0.6;
+}
+.hero-corner-tl { top: 2rem; left: 2rem; border-top: 2px solid var(--copper-soft); border-left: 2px solid var(--copper-soft); }
+.hero-corner-tr { top: 2rem; right: 2rem; border-top: 2px solid var(--copper-soft); border-right: 2px solid var(--copper-soft); }
+.hero-corner-bl { bottom: 2rem; left: 2rem; border-bottom: 2px solid var(--copper-soft); border-left: 2px solid var(--copper-soft); }
+.hero-corner-br { bottom: 2rem; right: 2rem; border-bottom: 2px solid var(--copper-soft); border-right: 2px solid var(--copper-soft); }
+
+.hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.hero-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    color: var(--copper-soft);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+}
+.hero-tagline::before, .hero-tagline::after {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--copper-soft);
+}
+
+.hero-frame {
+    border: 2px solid var(--paper);
+    padding: 2.5rem 3rem;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 1.5rem;
+    background: rgba(26, 23, 20, 0.05);
+}
+.hero-frame::before, .hero-frame::after {
+    content: '';
+    position: absolute;
+    width: 12px; height: 12px;
+    background: var(--copper-hot);
+    border-radius: 50%;
+}
+.hero-frame::before { top: -7px; left: -7px; }
+.hero-frame::after { bottom: -7px; right: -7px; }
+
+.hero-headline {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(28px, 5.2vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+    margin: 0;
+    text-transform: uppercase;
+    text-wrap: balance;
+    hyphens: none;
+    -webkit-hyphens: none;
+    word-break: keep-all;
+}
+.hero-headline em {
+    font-style: italic;
+    color: var(--copper-hot);
+    text-transform: lowercase;
+    letter-spacing: -0.02em;
+    display: inline-block;
+}
+
+.hero-script {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(32px, 4.5vw, 56px);
+    color: var(--copper-soft);
+    margin-top: -0.5rem;
+    margin-bottom: 2rem;
+    display: block;
+    font-weight: 500;
+    transform: rotate(-2deg);
+}
+
+.hero-sub {
+    max-width: 580px;
+    margin: 0 auto 2.5rem;
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(245, 237, 224, 0.92);
+}
+
+/* Booking widget in hero */
+.booking-widget {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 8px;
+    box-shadow: 0 30px 80px -20px rgba(0,0,0,0.5);
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1.2fr 1.2fr 1fr auto;
+    gap: 0.5rem;
+    align-items: stretch;
+    position: relative;
+}
+.booking-widget::before {
+    content: 'Offertemodule';
+    position: absolute;
+    top: -22px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--copper);
+    color: var(--paper);
+    padding: 0.35rem 1rem;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    white-space: nowrap;
+}
+.bw-field {
+    padding: 1rem 1.25rem;
+    border-radius: 6px;
+    background: var(--paper-warm);
+    text-align: left;
+    transition: background 0.3s;
+}
+.bw-field:hover { background: var(--paper-deep); }
+.bw-field label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.25rem;
+}
+.bw-field select, .bw-field input {
+    background: transparent;
+    border: none;
+    width: 100%;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+}
+.bw-field input::placeholder { color: var(--ink-soft); opacity: 0.7; }
+.bw-field select:focus, .bw-field input:focus { outline: none; }
+.bw-cta {
+    background: var(--copper);
+    color: var(--paper);
+    padding: 1rem 2rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    transition: all 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    white-space: nowrap;
+}
+.bw-cta:hover { background: var(--ink); transform: translateY(-2px); }
+.bw-cta svg { transition: transform 0.3s; }
+.bw-cta:hover svg { transform: translateX(4px); }
+
+/* Stamp on hero */
+.hero-stamp {
+    position: absolute;
+    bottom: 5rem;
+    right: 4rem;
+    z-index: 6;
+    width: 140px; height: 140px;
+    pointer-events: none;
+}
+.hero-stamp-ring {
+    position: absolute;
+    inset: 0;
+    width: 100%; height: 100%;
+    animation: spinStamp 60s linear infinite;
+    opacity: 0.85;
+}
+.hero-stamp-center {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 70px; height: 70px;
+    transform: translate(-50%, -50%);
+    filter: brightness(0) invert(1) sepia(1) saturate(4) hue-rotate(330deg);
+    opacity: 0.9;
+}
+@keyframes spinStamp { to { transform: rotate(360deg); } }
+
+/* =====================================================
+   9. MARQUEE STRIP
+===================================================== */
+.marquee {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.25rem 0;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(245, 237, 224, 0.1);
+}
+.marquee-track {
+    display: flex;
+    gap: 4rem;
+    animation: scrollLeft 50s linear infinite;
+    white-space: nowrap;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 28px;
+    width: max-content;
+}
+.marquee-track > span {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+.marquee-track > span::after {
+    content: '✦';
+    color: var(--copper-hot);
+    font-style: normal;
+    font-size: 16px;
+}
+@keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+/* =====================================================
+   10. SECTION CHAPTER HEADER
+===================================================== */
+.chapter {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+.chapter-num {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 56px;
+    color: var(--copper);
+    line-height: 1;
+    position: relative;
+}
+.chapter-num::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: -3rem;
+    width: 2rem; height: 1px;
+    background: var(--copper);
+}
+.chapter-title {
+    text-align: center;
+}
+.chapter-title .mono-label {
+    color: var(--stone);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+.chapter-title h2 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(32px, 4.5vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+}
+.chapter-title h2 em {
+    font-style: italic;
+    color: var(--copper);
+}
+.chapter-decor {
+    width: 80px;
+    color: var(--copper);
+}
+
+/* =====================================================
+   11. SECTION 01 — DE FILOSOFIE
+===================================================== */
+.filosofie {
+    padding: 10rem 5vw;
+    background: var(--paper);
+    position: relative;
+}
+.filosofie-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+}
+.filosofie-quote {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(28px, 3.2vw, 44px);
+    line-height: 1.18;
+    color: var(--ink);
+    letter-spacing: -0.012em;
+    position: relative;
+    padding-left: 2rem;
+    border-left: 3px solid var(--copper);
+}
+.filosofie-quote em { font-style: italic; color: var(--copper); }
+
+.filosofie-text {
+    padding-top: 1rem;
+}
+.filosofie-text p {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+}
+.filosofie-text .lead {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 2rem;
+}
+.filosofie-pillars {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+.pillar {
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--line-strong);
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--sage-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.pillar::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: var(--copper);
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* =====================================================
+   12. SECTION 02 — DE RUIMTES
+===================================================== */
+.ruimtes {
+    padding: 10rem 5vw;
+    background: var(--paper-warm);
+    position: relative;
+    overflow: hidden;
+}
+.ruimtes::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 200px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 30'%3E%3Cpath d='M10 0 L18 15 L14 15 L20 25 L0 25 L6 15 L2 15 Z' fill='%234d5440' opacity='0.06'/%3E%3C/svg%3E");
+    background-size: 30px;
+    background-repeat: repeat;
+    pointer-events: none;
+}
+
+.ruimtes-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    position: relative;
+    z-index: 1;
+}
+
+.ruimte-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s;
+}
+.ruimte-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.2);
+}
+
+.ruimte-photo {
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    position: relative;
+}
+.ruimte-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    filter: brightness(0.95) contrast(1.05);
+}
+.ruimte-card:hover .ruimte-photo img { transform: scale(1.08); }
+
+.ruimte-tag {
+    position: absolute;
+    top: 1.5rem; left: 1.5rem;
+    background: var(--paper);
+    color: var(--copper);
+    padding: 0.5rem 1rem;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 16px;
+    border-radius: 100px;
+    z-index: 2;
+}
+
+.ruimte-body { padding: 2.5rem 2rem 2rem; }
+.ruimte-body h3 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+.ruimte-body h3 em { font-style: italic; color: var(--copper); }
+.ruimte-cap {
+    font-family: 'Caveat', cursive;
+    font-size: 22px;
+    color: var(--stone);
+    margin-bottom: 1.25rem;
+    display: block;
+}
+.ruimte-body p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+}
+.ruimte-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--sage-deep);
+    border-bottom: 1px solid var(--copper);
+    padding-bottom: 4px;
+    transition: gap 0.4s, color 0.4s;
+}
+.ruimte-link:hover { color: var(--copper); gap: 1.25rem; }
+
+/* Activities list */
+.activiteiten {
+    margin-top: 6rem;
+    max-width: 1300px;
+    margin-left: auto;
+    margin-right: auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 3rem 3rem 2.5rem;
+    position: relative;
+    z-index: 1;
+}
+.activiteiten-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+}
+.activiteiten-header .mono-label { color: var(--copper); margin-bottom: 0.75rem; display: block; }
+.activiteiten-header h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 400;
+    line-height: 1.1;
+}
+.activiteiten-header h4 em { font-style: italic; color: var(--copper); }
+
+.activiteiten-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.85rem;
+}
+.activiteit {
+    padding: 0.9rem 1.1rem;
+    background: var(--paper-warm);
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.3s;
+    hyphens: none;
+    -webkit-hyphens: none;
+    line-height: 1.3;
+}
+.activiteit:hover { background: var(--sage-deep); color: var(--paper); transform: translateX(4px); }
+.activiteit svg { flex-shrink: 0; color: var(--copper); transition: color 0.3s; }
+.activiteit:hover svg { color: var(--copper-soft); }
+
+/* =====================================================
+   13. SECTION 03 — FACILITEITEN
+===================================================== */
+.faciliteiten {
+    padding: 10rem 5vw;
+    background: var(--ink);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+}
+.faciliteiten .chapter-num { color: var(--copper-hot); }
+.faciliteiten .chapter-num::before { background: var(--copper-hot); }
+.faciliteiten .chapter-title h2 em { color: var(--copper-hot); }
+.faciliteiten .chapter-title .mono-label { color: var(--copper-soft); }
+.faciliteiten .chapter-decor { color: var(--copper-hot); }
+
+.faciliteiten-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+}
+.fac {
+    border: 1px solid rgba(245, 237, 224, 0.15);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.fac:hover { background: var(--sage-deep); border-color: var(--copper); }
+.fac-icon {
+    width: 56px; height: 56px;
+    border: 1px solid var(--copper-soft);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: var(--copper-soft);
+    transition: all 0.4s;
+}
+.fac:hover .fac-icon { background: var(--copper); color: var(--paper); border-color: var(--copper); }
+.fac h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 24px;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+}
+.fac h4 em { font-style: italic; color: var(--copper-hot); }
+.fac p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(245, 237, 224, 0.75);
+}
+.fac-large { grid-column: span 6; }
+.fac-medium { grid-column: span 6; }
+.fac-small { grid-column: span 4; }
+.fac-photo {
+    grid-column: span 6;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.fac-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s; }
+.fac-photo:hover img { transform: scale(1.08); }
+
+/* =====================================================
+   14. SECTION 04 — VERBLIJF B&B
+===================================================== */
+.verblijf {
+    padding: 10rem 5vw;
+    background: var(--paper);
+    position: relative;
+}
+.verblijf-intro {
+    max-width: 720px;
+    margin: 0 auto 4rem;
+    text-align: center;
+}
+.verblijf-intro p {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+.verblijf-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+}
+.huis {
+    position: relative;
+}
+.huis-photo {
+    aspect-ratio: 5/4;
+    overflow: hidden;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+    position: relative;
+}
+.huis-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s; }
+.huis:hover .huis-photo img { transform: scale(1.05); }
+.huis-photo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(26,23,20,0.5), transparent 50%);
+}
+.huis-badge {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    background: var(--copper);
+    color: var(--paper);
+    padding: 0.5rem 1rem;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    border-radius: 100px;
+    z-index: 2;
+}
+.huis-content { padding: 0 0.5rem; }
+.huis-content h3 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: clamp(32px, 3.5vw, 48px);
+    line-height: 1;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+}
+.huis-content h3 em { font-style: italic; color: var(--copper); }
+.huis-content .script {
+    font-family: 'Caveat', cursive;
+    font-size: 24px;
+    color: var(--stone);
+    display: block;
+    margin-bottom: 1.5rem;
+}
+.huis-specs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+.huis-spec {
+    padding: 1rem 0;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-soft);
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+.huis-spec svg { color: var(--copper); flex-shrink: 0; }
+
+.bnb-callout {
+    max-width: 1300px;
+    margin: 4rem auto 0;
+    background: var(--sage-deep);
+    color: var(--paper);
+    padding: 3rem;
+    border-radius: 6px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+.bnb-callout::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; width: 220px;
+    background: radial-gradient(circle at top right, rgba(184,105,58,0.4), transparent 70%);
+    pointer-events: none;
+}
+.bnb-callout-content { position: relative; z-index: 1; }
+.bnb-callout-content .mono-label { color: var(--copper-soft); margin-bottom: 0.75rem; display: block; }
+.bnb-callout-content h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 26px;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+.bnb-callout-content h4 em { font-style: italic; color: var(--copper-soft); }
+.bnb-callout-content p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(245, 237, 224, 0.85);
+    max-width: 600px;
+}
+.bnb-callout a {
+    background: var(--copper);
+    color: var(--paper);
+    padding: 1rem 1.75rem;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    transition: all 0.4s;
+    position: relative;
+    z-index: 1;
+}
+.bnb-callout a:hover { background: var(--paper); color: var(--ink); transform: translateY(-2px); }
+
+/* =====================================================
+   15. SECTION 05 — DE LOCATIE
+===================================================== */
+.locatie {
+    padding: 10rem 5vw;
+    background: var(--paper-warm);
+    position: relative;
+}
+.locatie-layout {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+}
+.locatie-text {}
+.locatie-text .lead {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line-strong);
+}
+.locatie-text p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin-bottom: 1.5rem;
+}
+.locatie-stats {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+.locatie-stat {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
+}
+.locatie-stat:last-child { border-bottom: 1px solid var(--line); }
+.locatie-stat .num {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--copper);
+    line-height: 1;
+    white-space: nowrap;
+    display: inline-block;
+}
+.locatie-stat .num small { font-size: 15px; opacity: 0.7; margin-left: 1px; }
+.locatie-stat .desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+}
+.locatie-stat .desc strong {
+    display: block;
+    color: var(--ink);
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.05em;
+}
+
+.locatie-map {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 2.5rem;
+    border-radius: 4px;
+    position: relative;
+}
+.locatie-showroom-photo {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper-deep);
+    aspect-ratio: 4/3;
+}
+.locatie-showroom-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.locatie-pins {
+    margin-top: 1.5rem;
+    display: grid;
+    gap: 0.6rem;
+}
+.locatie-pin {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+}
+.locatie-pin .dot {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    margin-right: 0.65rem;
+    vertical-align: 0.05em;
+    flex-shrink: 0;
+}
+.locatie-pin .dot.copper { background: var(--copper); }
+.locatie-pin .dot.sage { background: var(--sage); }
+.locatie-pin .dot.stone { background: var(--stone); }
+.locatie-pin strong { color: var(--ink); font-weight: 600; }
+
+.activities-outdoor {
+    max-width: 1300px;
+    margin: 5rem auto 0;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 2.5rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: center;
+}
+.activities-outdoor-text .mono-label { color: var(--copper); margin-bottom: 0.5rem; display: block; }
+.activities-outdoor-text h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.15;
+}
+.activities-outdoor-text h4 em { font-style: italic; color: var(--copper); }
+.activities-outdoor-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.outdoor-item {
+    padding: 1.25rem;
+    background: var(--paper-warm);
+    border-radius: 4px;
+    font-size: 13px;
+    color: var(--ink-soft);
+}
+.outdoor-item strong {
+    display: block;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+}
+
+/* =====================================================
+   16. SECTION 06 — BOEKINGSMODULE
+===================================================== */
+.booking-full {
+    padding: 10rem 5vw;
+    background: var(--sage-deep);
+    color: var(--paper);
+    position: relative;
+    overflow: hidden;
+}
+.booking-full::before {
+    content: '';
+    position: absolute;
+    top: -30%; right: -10%;
+    width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(184,105,58,0.18), transparent 70%);
+    pointer-events: none;
+}
+.booking-full::after {
+    content: '';
+    position: absolute;
+    bottom: -30%; left: -10%;
+    width: 50vw; height: 50vw;
+    background: radial-gradient(circle, rgba(194,202,176,0.1), transparent 70%);
+    pointer-events: none;
+}
+.booking-full .chapter { position: relative; z-index: 1; }
+.booking-full .chapter-num { color: var(--copper-soft); }
+.booking-full .chapter-num::before { background: var(--copper-soft); }
+.booking-full .chapter-title .mono-label { color: var(--copper-soft); }
+.booking-full .chapter-title h2 em { color: var(--copper-hot); }
+.booking-full .chapter-decor { color: var(--copper-soft); }
+
+.booking-card {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px -30px rgba(0,0,0,0.6);
+    position: relative;
+    z-index: 1;
+}
+
+.booking-progress {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    background: var(--ink);
+    color: var(--paper);
+}
+.booking-step {
+    padding: 1.25rem 1.5rem;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    border-right: 1px solid rgba(245, 237, 224, 0.1);
+    opacity: 0.5;
+    transition: all 0.3s;
+    position: relative;
+    cursor: pointer;
+}
+.booking-step:last-child { border-right: none; }
+.booking-step .step-num {
+    width: 24px; height: 24px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+.booking-step.active { opacity: 1; background: var(--sage-deep); }
+.booking-step.active .step-num { background: var(--copper); border-color: var(--copper); }
+.booking-step.completed { opacity: 0.85; }
+.booking-step.completed .step-num { background: var(--copper); border-color: var(--copper); }
+
+.booking-body {
+    padding: 3rem;
+    min-height: 500px;
+}
+
+.booking-pane { display: none; }
+.booking-pane.active { display: block; animation: fadeIn 0.4s ease; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.booking-pane h3 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 32px;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+.booking-pane h3 em { font-style: italic; color: var(--copper); }
+.booking-pane > p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 2.5rem;
+    max-width: 540px;
+}
+
+.type-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.type-option {
+    border: 2px solid var(--line);
+    padding: 2rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    text-align: left;
+}
+.type-option:hover { border-color: var(--copper); transform: translateY(-3px); }
+.type-option.selected { border-color: var(--copper); background: rgba(184, 105, 58, 0.06); }
+.type-option.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 1rem; right: 1rem;
+    width: 22px; height: 22px;
+    background: var(--copper);
+    color: var(--paper);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+}
+.type-option .icon {
+    width: 40px; height: 40px;
+    color: var(--copper);
+    margin-bottom: 1rem;
+}
+.type-option h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 20px;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+}
+.type-option p {
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+.form-field { display: flex; flex-direction: column; }
+.form-field label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--stone);
+    margin-bottom: 0.5rem;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    padding: 0.85rem 1rem;
+    font-size: 14px;
+    border-radius: 4px;
+    color: var(--ink);
+    transition: border-color 0.3s, background 0.3s;
+    width: 100%;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    outline: none;
+    border-color: var(--copper);
+    background: var(--paper);
+}
+.form-field textarea { resize: vertical; min-height: 100px; font-family: inherit; }
+
+.extras-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+}
+.extra {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--paper-warm);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.extra:hover { border-color: var(--copper); }
+.extra input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--copper);
+    cursor: pointer;
+}
+.extra > span {
+    flex: 1;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.4;
+}
+.extra strong { display: block; font-weight: 600; margin-bottom: 0.2rem; }
+.extra small { color: var(--stone); font-size: 12px; display: block; line-height: 1.4; }
+
+.summary {
+    background: var(--paper-warm);
+    border-radius: 4px;
+    padding: 2rem;
+    margin-top: 2rem;
+}
+.summary h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 20px;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.65rem 0;
+    border-bottom: 1px dashed var(--line);
+    font-size: 13px;
+}
+.summary-row:last-child { border-bottom: none; padding-top: 1rem; font-weight: 600; font-size: 15px; }
+.summary-row span:first-child { color: var(--ink-soft); }
+.summary-row span:last-child { color: var(--ink); font-weight: 500; }
+
+.booking-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+    gap: 1rem;
+}
+.btn-prev, .btn-next {
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    transition: all 0.4s;
+    cursor: pointer;
+}
+.btn-prev {
+    background: transparent;
+    color: var(--ink-soft);
+    border: 1px solid var(--line-strong);
+}
+.btn-prev:hover { color: var(--copper); border-color: var(--copper); }
+.btn-next {
+    background: var(--copper);
+    color: var(--paper);
+}
+.btn-next:hover { background: var(--ink); transform: translateY(-2px); }
+.btn-prev:disabled, .btn-prev[disabled] { opacity: 0.4; cursor: not-allowed; }
+
+.booking-success {
+    text-align: center;
+    padding: 2rem 0;
+}
+.booking-success .check {
+    width: 80px; height: 80px;
+    margin: 0 auto 1.5rem;
+    background: var(--copper);
+    color: var(--paper);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    box-shadow: 0 20px 50px -10px rgba(184, 105, 58, 0.4);
+}
+.booking-success h3 { margin-bottom: 1rem; }
+.booking-success p {
+    margin: 0 auto 2rem;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-soft);
+}
+
+/* =====================================================
+   17. FOOTER
+===================================================== */
+footer {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 6rem 5vw 2rem;
+    position: relative;
+}
+.footer-grid {
+    max-width: 1440px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 4rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(245, 237, 224, 0.1);
+}
+.footer-logo {
+    height: 64px;
+    width: auto;
+    margin-bottom: 1.25rem;
+    filter: brightness(0) invert(1);
+    opacity: 0.92;
+}
+.footer-brand h4 {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 32px;
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+.footer-brand p {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: rgba(245, 237, 224, 0.7);
+    max-width: 320px;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+.footer-contact {
+    font-size: 13px;
+    color: rgba(245, 237, 224, 0.75);
+    line-height: 1.8;
+}
+.footer-contact a:hover { color: var(--copper-hot); }
+.footer-col strong {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--copper-soft);
+    display: block;
+    margin-bottom: 1.5rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col li { margin-bottom: 0.75rem; }
+.footer-col a {
+    color: rgba(245, 237, 224, 0.7);
+    font-size: 14px;
+    transition: color 0.3s;
+}
+.footer-col a:hover { color: var(--copper-hot); }
+
+.footer-bottom {
+    max-width: 1440px;
+    margin: 2rem auto 0;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    color: rgba(245, 237, 224, 0.4);
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* =====================================================
+   18. SCROLL REVEALS
+===================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   19. RESPONSIVE
+===================================================== */
+@media (max-width: 1024px) {
+    .filosofie-grid,
+    .ruimtes-grid,
+    .verblijf-grid,
+    .locatie-layout,
+    .activities-outdoor,
+    .bnb-callout { grid-template-columns: 1fr; gap: 3rem; }
+
+    .booking-widget { grid-template-columns: 1fr; }
+
+    .chapter { grid-template-columns: 1fr; text-align: center; gap: 1rem; }
+    .chapter-num { font-size: 44px; }
+    .chapter-num::before { display: none; }
+    .chapter-decor { margin: 0 auto; }
+
+    .faciliteiten-grid { grid-template-columns: repeat(6, 1fr); }
+    .fac-large, .fac-medium, .fac-photo, .fac-small { grid-column: span 6; }
+    .fac { min-height: auto; padding: 2rem 1.75rem; }
+    .fac > div { margin-bottom: 1rem; }
+
+    .type-options { grid-template-columns: repeat(2, 1fr); }
+    .form-row { grid-template-columns: 1fr; }
+    .extras-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+
+    .booking-progress { grid-template-columns: repeat(6, 1fr); }
+    .booking-step { padding: 1rem 0.5rem; font-size: 10px; letter-spacing: 0.1em; gap: 0.35rem; justify-content: center; }
+    .booking-step > span:not(.step-num) { display: none; }
+
+    .hero-stamp { display: none; }
+    .hero-frame { padding: 2rem 1.75rem; }
+    .marquee-track { font-size: 22px; gap: 3rem; }
+    .marquee-track > span { gap: 3rem; }
+
+    .activities-outdoor { padding: 2rem; }
+    .activities-outdoor-list { grid-template-columns: 1fr 1fr; }
+
+    .bnb-callout { padding: 2.5rem; text-align: center; }
+    .bnb-callout a { width: 100%; justify-content: center; white-space: normal; }
+
+    .activiteiten { padding: 2.5rem 1.75rem 2rem; }
+
+    .locatie-stat { grid-template-columns: 80px 1fr; gap: 1.25rem; }
+    .filosofie-pillars { grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .hero-configurator { margin: 0 -0.5rem; }
+    .hero-configurator .booking-card { border-radius: 6px; }
+}
+@media (max-width: 768px) {
+    .filosofie, .ruimtes, .faciliteiten, .verblijf, .locatie, .booking-full { padding: 6rem 5vw; }
+    .hero { min-height: auto; padding: 3.5rem 5vw 2.5rem; }
+    .hero-sub { font-size: 15px; }
+    .booking-pane h3 { font-size: 26px; }
+    .booking-actions { flex-direction: column-reverse; align-items: stretch; }
+    .btn-prev, .btn-next, .bw-cta { min-height: 44px; justify-content: center; width: 100%; }
+    .montage-options { grid-template-columns: 1fr; }
+    .chapter-num { font-size: 38px; }
+    .topstrip { flex-wrap: wrap; gap: 0.5rem; justify-content: center; text-align: center; padding: 0.65rem 4vw; }
+}
+@media (max-width: 640px) {
+    .nav-links, .topstrip-left, .nav-cta { display: none; }
+    .mobile-toggle { display: block; min-width: 44px; min-height: 44px; }
+    .nav-logo { font-size: 18px; gap: 0.6rem; }
+    .nav-logo img { height: 36px; }
+    .topstrip-right { font-size: 10px; gap: 0.4rem; flex-wrap: wrap; justify-content: center; width: 100%; }
+    .booking-body { padding: 1.25rem; min-height: auto; }
+    .booking-progress { grid-template-columns: repeat(6, 1fr); }
+    .booking-step { padding: 0.75rem 0.25rem; gap: 0; font-size: 0; }
+    .booking-step .step-num { width: 24px; height: 24px; font-size: 11px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 2.5rem; padding-bottom: 3rem; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+    .filosofie, .ruimtes, .faciliteiten, .verblijf, .locatie, .booking-full { padding: 4.5rem 5vw; }
+    .huis-specs { grid-template-columns: 1fr; }
+    .filosofie-pillars { grid-template-columns: 1fr; }
+    .hero-frame { padding: 1.5rem 1.1rem; }
+    .hero-tagline { font-size: 9px; letter-spacing: 0.22em; }
+    .hero-tagline::before, .hero-tagline::after { width: 20px; }
+    .hero-corner-tl, .hero-corner-tr, .hero-corner-bl, .hero-corner-br { width: 32px; height: 32px; }
+    .hero-corner-tl { top: 0.75rem; left: 0.75rem; }
+    .hero-corner-tr { top: 0.75rem; right: 0.75rem; }
+    .hero-corner-bl { bottom: 0.75rem; left: 0.75rem; }
+    .hero-corner-br { bottom: 0.75rem; right: 0.75rem; }
+    .hero { padding: 3rem 4vw 2.5rem; }
+    .activiteiten-grid { grid-template-columns: 1fr; }
+    .ruimte-body { padding: 1.75rem 1.25rem; }
+    .activities-outdoor-list { grid-template-columns: 1fr; }
+    .activities-outdoor { padding: 1.5rem; gap: 1.5rem; }
+    .locatie-map { padding: 1.5rem; }
+    .bnb-callout { padding: 1.75rem 1.25rem; }
+    .type-options { grid-template-columns: 1fr; }
+    .type-option { padding: 1.25rem 1rem; min-height: 44px; }
+    .config-live-summary { padding: 0.75rem 1rem; font-size: 12px; }
+    .marquee-track { font-size: 18px; }
+    .wrap, .wrap-narrow { padding: 0 4vw; }
+}
+@media (max-width: 375px) {
+    body { font-size: 15px; }
+    .hero-headline { font-size: clamp(24px, 7.5vw, 32px); }
+    .chapter-title h2 { font-size: clamp(26px, 8vw, 36px); }
+    .filosofie-quote { padding-left: 1.25rem; font-size: clamp(22px, 6vw, 28px); }
+}
+@media (max-width: 320px) {
+    .nav-logo span, .nav-logo { font-size: 16px; }
+    .topstrip-right a { letter-spacing: 0.05em; }
+    .hero-frame { padding: 1.25rem 0.85rem; }
+    .booking-step .step-num { width: 22px; height: 22px; font-size: 10px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================== -->
+<!-- TOP STRIP -->
+<!-- ============================== -->
+<div class="topstrip">
+    <div class="topstrip-left">
+        <span><span class="topstrip-dot"></span>Showroom op afspraak</span>
+        <span>Veenendaal · NL</span>
+    </div>
+    <div class="topstrip-right">
+        <a href="tel:+31600000000">+31 (0)6 XX XX XX XX</a>
+        <span>·</span>
+        <a href="mailto:info@deurmeester.nl">info@deurmeester.nl</a>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- NAV -->
+<!-- ============================== -->
+<nav class="global" id="global-nav">
+    <a href="#" class="nav-logo">
+        <img src="images/logo.png" alt="DeurMeester logo"/>
+        DeurMeester
+    </a>
+    <div class="nav-links">
+        <a href="#filosofie">Vakmanschap</a>
+        <a href="#ruimtes">Collectie</a>
+        <a href="#faciliteiten">Materialen</a>
+        <a href="#verblijf">Montage</a>
+        <a href="#locatie">Showroom</a>
+    </div>
+    <a href="#boeken" class="nav-cta">Offerte</a>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+<div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <div class="mobile-nav-panel">
+        <div class="mobile-nav-links">
+            <a href="#filosofie">Vakmanschap</a>
+            <a href="#ruimtes">Collectie</a>
+            <a href="#faciliteiten">Materialen</a>
+            <a href="#verblijf">Montage</a>
+            <a href="#locatie">Showroom</a>
+            <a href="#boeken" class="mobile-nav-cta">Offerte aanvragen</a>
+        </div>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- HERO -->
+<!-- ============================== -->
+<section class="hero">
+    <div class="hero-bg">
+        <img src="images/hero-luxury-door.png" alt="Luxe houten taatsdeur in een modern interieur met marmeren vloer"/>
+    </div>
+    <div class="hero-corner-tl"></div>
+    <div class="hero-corner-tr"></div>
+    <div class="hero-corner-bl"></div>
+    <div class="hero-corner-br"></div>
+
+    <!-- Spinning stamp with real logo -->
+    <div class="hero-stamp">
+        <svg class="hero-stamp-ring" viewBox="0 0 140 140" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <path id="circlePath" d="M 70,70 m -56,0 a 56,56 0 1,1 112,0 a 56,56 0 1,1 -112,0"/>
+            </defs>
+            <circle cx="70" cy="70" r="67" stroke="#e9c39a" stroke-width="0.7" fill="none"/>
+            <circle cx="70" cy="70" r="59" stroke="#e9c39a" stroke-width="0.5" fill="none"/>
+            <text fill="#e9c39a" font-family="Montserrat, sans-serif" font-size="9" font-weight="700" letter-spacing="3">
+                <textPath href="#circlePath">DEURMEESTER · VEENENDAAL · SINDS 1998 · </textPath>
+            </text>
+        </svg>
+        <img class="hero-stamp-center" src="images/logo.png" alt=""/>
+    </div>
+
+    <div class="hero-content">
+        <span class="hero-tagline">Advies &middot; Maatwerk &middot; Montage</span>
+        
+        <div class="hero-frame">
+            <h1 class="hero-headline">
+                Binnendeuren die<br/>jouw interieur <em>afmaken</em>
+            </h1>
+        </div>
+        <span class="hero-script">van advies tot plaatsing</span>
+
+        <p class="hero-sub">
+            Stel je ideale binnendeur samen met onze configurator — kies type, materiaal, afmetingen en afwerking. Wij adviseren, leveren en monteren voor nieuwbouw en renovatie.
+        </p>
+
+        <!-- Deurconfigurator in hero -->
+        <div class="hero-configurator" data-il-element="booking">
+            <span class="hero-configurator-label">Deurconfigurator</span>
+            <div class="booking-card">
+                <div class="booking-progress">
+                    <div class="booking-step active" data-step="1"><span class="step-num">1</span><span>Deurtype</span></div>
+                    <div class="booking-step" data-step="2"><span class="step-num">2</span><span>Materiaal</span></div>
+                    <div class="booking-step" data-step="3"><span class="step-num">3</span><span>Afmetingen</span></div>
+                    <div class="booking-step" data-step="4"><span class="step-num">4</span><span>Afwerking</span></div>
+                    <div class="booking-step" data-step="5"><span class="step-num">5</span><span>Montage</span></div>
+                    <div class="booking-step" data-step="6"><span class="step-num">6</span><span>Contact</span></div>
+                </div>
+                <div class="config-live-summary"><strong>Jouw configuratie</strong><span class="config-summary-text">Stel je deur samen — je keuzes verschijnen hier live.</span></div>
+                <div class="booking-body">
+                    <div class="booking-pane active" data-pane="1">
+                        <h3>Welk <em>deurtype</em>?</h3><p>Kies het type dat past bij jouw doorgang en interieur.</p>
+                        <div class="type-options">
+                            <label class="type-option selected" data-type="Taatsdeur"><h4>Taatsdeur</h4><p>Elegant en ruimtelijk, ideaal voor brede doorgangen.</p></label>
+                            <label class="type-option" data-type="Schuifdeur"><h4>Schuifdeur</h4><p>In of voor de wand — geen draairuimte nodig.</p></label>
+                            <label class="type-option" data-type="Opdekdeur"><h4>Opdekdeur</h4><p>Klassiek en veelzijdig, de meest gekozen oplossing.</p></label>
+                            <label class="type-option" data-type="Vouwwand"><h4>Vouwwand</h4><p>Flexibele scheiding tussen ruimtes.</p></label>
+                            <label class="type-option" data-type="Stompdeur"><h4>Stompdeur</h4><p>Vlak in het kozijn, strak en modern.</p></label>
+                            <label class="type-option" data-type="Glasdeur"><h4>Glasdeur</h4><p>Licht en transparant, met of zonder profiel.</p></label>
+                        </div>
+                        <div class="booking-actions"><button type="button" class="btn-prev" disabled>← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="2">
+                        <h3>Welk <em>materiaal</em>?</h3><p>Materialen van topkwaliteit, afgestemd op gebruik en budget.</p>
+                        <div class="form-row"><div class="form-field"><label>Materiaal</label><select class="bw-materiaal"><option value="">Kies materiaal…</option><option>Massief hout</option><option>Fineer</option><option>Gelakt MDF</option><option>Glas</option><option>Combinatie hout/glas</option></select></div></div>
+                        <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="3">
+                        <h3>Welke <em>afmetingen</em>?</h3><p>Kies een standaardmaat of vul maatwerk in (breedte × hoogte in cm).</p>
+                        <div class="form-row"><div class="form-field"><label>Standaardmaat</label><select class="bw-standaard"><option value="">Kies standaardmaat…</option><option>631 × 2015 mm</option><option>780 × 2015 mm</option><option>830 × 2115 mm</option><option>930 × 2115 mm</option><option>Maatwerk (op maat)</option></select></div></div>
+                        <div class="form-row"><div class="form-field"><label>Breedte (cm)</label><input type="number" class="bw-breedte" placeholder="bijv. 83" min="40" max="200"/></div><div class="form-field"><label>Hoogte (cm)</label><input type="number" class="bw-hoogte" placeholder="bijv. 211" min="180" max="280"/></div></div>
+                        <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="4">
+                        <h3>Afwerking &amp; <em>kleur</em></h3><p>Van naturel hout tot strak gelakt — of een eigen RAL-kleur.</p>
+                        <div class="form-row"><div class="form-field"><label>Afwerking / kleur</label><select class="bw-afwerking"><option value="">Kies afwerking…</option><option>Wit gelakt</option><option>Eiken</option><option>Walnoot</option><option>Zwart</option><option>Custom RAL</option></select></div><div class="form-field bw-ral-wrap" hidden><label>RAL-nummer</label><input type="text" class="bw-ral" placeholder="bijv. 9010"/></div></div>
+                        <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="5">
+                        <h3><em>Montage</em></h3><p>Alleen levering of volledig ontzorgd inclusief plaatsing door onze vakmannen.</p>
+                        <div class="montage-options">
+                            <label class="montage-option"><input type="radio" value="Alleen levering"/><strong>Alleen levering</strong><small>Je regelt zelf de montage</small></label>
+                            <label class="montage-option"><input type="radio" value="Inclusief montage" checked/><strong>Inclusief montage</strong><small>Plaatsing en afstelling door DeurMeester</small></label>
+                        </div>
+                        <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="6">
+                        <h3>Contact &amp; <em>samenvatting</em></h3><p>Controleer je configuratie en laat je gegevens achter voor een vrijblijvende offerte.</p>
+                        <div class="summary"><h4>Jouw deur</h4>
+                            <div class="summary-row"><span>Deurtype</span><span class="sum-deurtype">—</span></div>
+                            <div class="summary-row"><span>Materiaal</span><span class="sum-materiaal">—</span></div>
+                            <div class="summary-row"><span>Afmetingen</span><span class="sum-afmetingen">—</span></div>
+                            <div class="summary-row"><span>Afwerking</span><span class="sum-afwerking">—</span></div>
+                            <div class="summary-row"><span>Montage</span><span class="sum-montage">—</span></div>
+                        </div>
+                        <div class="form-row"><div class="form-field"><label>Naam</label><input type="text" class="bw-name" placeholder="Voor- en achternaam"/></div><div class="form-field"><label>Organisatie (optioneel)</label><input type="text" class="bw-org"/></div></div>
+                        <div class="form-row"><div class="form-field"><label>E-mail</label><input type="email" class="bw-email"/></div><div class="form-field"><label>Telefoon</label><input type="tel" class="bw-phone"/></div></div>
+                        <div class="form-field"><label>Toelichting (optioneel)</label><textarea class="bw-notes" rows="3" placeholder="Bijzonderheden, aantal deuren, gewenste planning…"></textarea></div>
+                        <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next bw-submit">Offerte aanvragen</button></div>
+                    </div>
+                    <div class="booking-pane" data-pane="7"><div class="booking-success"><div class="check">✓</div><h3>Configuratie <em>verstuurd</em></h3><p>Bedankt! We sturen binnen 48 uur een offerte op maat.</p></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- MARQUEE -->
+<!-- ============================== -->
+<div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+        <span>Hout &amp; glas</span>
+        <span>Stijl &amp; functionaliteit</span>
+        <span>Maatwerk &amp; montage</span>
+        <span>Klassiek &amp; modern</span>
+        <span>Akoestiek &amp; privacy</span>
+        <span>Design &amp; detail</span>
+        <span>Hout &amp; glas</span>
+        <span>Stijl &amp; functionaliteit</span>
+        <span>Maatwerk &amp; montage</span>
+        <span>Klassiek &amp; modern</span>
+        <span>Akoestiek &amp; privacy</span>
+        <span>Design &amp; detail</span>
+    </div>
+</div>
+
+<!-- ============================== -->
+<!-- SECTION 01 — DE FILOSOFIE -->
+<!-- ============================== -->
+<section class="filosofie reveal" id="filosofie">
+    <div class="chapter">
+        <div class="chapter-num">01</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 01</span>
+            <h2>Ons <em>vakmanschap</em></h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="filosofie-grid">
+        <div>
+            <blockquote class="filosofie-quote">
+                Een binnendeur is meer dan een doorgang. Het is het <em>laatste detail</em> dat een ruimte afmaakt — en het eerste wat je ziet als je binnenkomt.
+            </blockquote>
+        </div>
+        <div class="filosofie-text">
+            <p class="lead">
+                Al meer dan 25 jaar helpen wij particulieren, aannemers en architecten de juiste binnendeur te kiezen.
+            </p>
+            <p>
+                Of het nu gaat om een enkele vervangende deur of een compleet nieuwbouwproject: wij combineren vakmanschap met persoonlijk advies. Geen standaardpakketten, maar oplossingen die passen bij jouw interieur en budget.
+            </p>
+            <p>
+                In onze showroom kun je materialen voelen, kleuren vergelijken en verschillende deurtypes uitproberen. Zo weet je zeker dat je keuze klopt — nog vóór de montage.
+            </p>
+            <div class="filosofie-pillars">
+                <div class="pillar">Vakmanschap</div>
+                <div class="pillar">Maatwerk</div>
+                <div class="pillar">Kwaliteit</div>
+                <div class="pillar">Service</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION 02 — DE RUIMTES -->
+<!-- ============================== -->
+<section class="ruimtes reveal" id="ruimtes">
+    <div class="chapter">
+        <div class="chapter-num">02</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 02</span>
+            <h2>Onze <em>collectie</em></h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="ruimtes-grid">
+        <article class="ruimte-card">
+            <div class="ruimte-photo">
+                <span class="ruimte-tag">populair</span>
+                <img src="images/taatsdeur-luxury.png" alt="Minimalistische stalen taatsdeur in een modern interieur met hoge plafonds"/>
+            </div>
+            <div class="ruimte-body">
+                <h3>Taats<em>deuren</em></h3>
+                <span class="ruimte-cap">elegant, ruimtelijk, statement</span>
+                <p>
+                    Draaien om een verticale as in het kozijn. Ideaal voor brede doorgangen en een open, luxe uitstraling. Beschikbaar in hout, glas en combinaties.
+                </p>
+                <a href="#boeken" class="ruimte-link">
+                    Vraag advies aan
+                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h11M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4"/></svg>
+                </a>
+            </div>
+        </article>
+
+        <article class="ruimte-card">
+            <div class="ruimte-photo">
+                <span class="ruimte-tag">ruimtebesparend</span>
+                <img src="images/schuifdeur-luxury.png" alt="Luxe walnotenhouten schuifdeur geïntegreerd in een moderne slaapkamerwand"/>
+            </div>
+            <div class="ruimte-body">
+                <h3>Schuif<em>deuren</em></h3>
+                <span class="ruimte-cap">strak, functioneel, modern</span>
+                <p>
+                    In de wand of voor de wand. Perfect wanneer draairuimte ontbreekt. Van enkele schuifdeuren tot complete wandsystemen met glas of hout.
+                </p>
+                <a href="#boeken" class="ruimte-link">
+                    Vraag advies aan
+                    <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h11M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4"/></svg>
+                </a>
+            </div>
+        </article>
+    </div>
+
+    <!-- Activities the rooms can be used for -->
+    <div class="activiteiten">
+        <div class="activiteiten-header">
+            <span class="mono-label">Ook in ons assortiment</span>
+            <h4>Meer <em>deurtypes</em></h4>
+        </div>
+        <div class="activiteiten-grid">
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Opdekdeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Stompe deuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Glasdeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Brandwerende deuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Geluidswerende deuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Louvredeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Paneeldeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Vouwdeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Scharnierdeuren</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Kozijnen op maat</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Deurkrukken &amp; beslag</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Glas-in-lood</div>
+            <div class="activiteit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.2"/></svg> Deurlijsten</div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION 03 — FACILITEITEN -->
+<!-- ============================== -->
+<section class="faciliteiten reveal" id="faciliteiten">
+    <div class="chapter">
+        <div class="chapter-num">03</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 03</span>
+            <h2>Materialen &amp; <em>afwerking</em></h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="faciliteiten-grid">
+        <div class="fac fac-large">
+            <div>
+                <div class="fac-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 19h18M5 19V9l7-5 7 5v10M9 19v-5h6v5" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Houtsoorten &amp; <em>fineer</em></h4>
+            </div>
+            <p>Eiken, essen, noten en meer. Natuurlijk fineer of gelakt in elke RAL-kleur. Voel de kwaliteit in onze showroom.</p>
+        </div>
+
+        <div class="fac-photo">
+            <img src="images/material-detail-luxury.png" alt="Detail van een luxe binnendeur: eikenhouten nerf gecombineerd met een matzwart stalen frame"/>
+        </div>
+
+        <div class="fac fac-small">
+            <div>
+                <div class="fac-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M2 12h20M4 12c0-4 3-7 8-7s8 3 8 7" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M8 12v6M12 12v6M16 12v6" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Glas &amp; glas-in-lood</h4>
+            </div>
+            <p>Helder, mat of geribbeld glas. Ook authentiek glas-in-lood voor karakter en lichtinval.</p>
+        </div>
+
+        <div class="fac fac-small">
+            <div>
+                <div class="fac-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 20V8M8 12c0-4 4-8 4-8s4 4 4 8M5 20h14" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Akoestiek &amp; isolatie</h4>
+            </div>
+            <p>Geluidswerende deuren tot 42 dB. Ideaal voor slaapkamers, kantoren en muziekruimtes.</p>
+        </div>
+
+        <div class="fac fac-small">
+            <div>
+                <div class="fac-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="9" r="3" stroke="currentColor" stroke-width="1.4"/>
+                        <path d="M12 12v7M9 19h6" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Beslag &amp; krukken</h4>
+            </div>
+            <p>Designkrukken, rozetten en scharnieren. Van minimalistisch RVS tot klassiek messing.</p>
+        </div>
+
+        <div class="fac fac-medium">
+            <div>
+                <div class="fac-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 12L12 3l9 9M5 10v10h14V10" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Kozijnen op maat</h4>
+            </div>
+            <p>Houten en MDF kozijnen, exact op maat gezaagd. Inclusief stompe of opdek aansluiting op bestaande wanden.</p>
+        </div>
+
+        <div class="fac fac-medium">
+            <div>
+                <div class="fac-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.4"/>
+                        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.4"/>
+                    </svg>
+                </div>
+                <h4>Lak &amp; <em>kleur</em></h4>
+            </div>
+            <p>Elke RAL-kleur mogelijk. Hoogglans, zijdeglans of mat. Perfect afgestemd op je interieur.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION 04 — VERBLIJF B&B -->
+<!-- ============================== -->
+<section class="verblijf reveal" id="verblijf">
+    <div class="chapter">
+        <div class="chapter-num">04</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 04</span>
+            <h2>Montage &amp; <em>service</em></h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="verblijf-intro">
+        <p>Van inmeten tot plaatsing: onze monteurs zorgen voor een perfecte pasvorm. Ook beschikbaar voor aannemers en projectontwikkelaars.</p>
+    </div>
+
+    <div class="verblijf-grid">
+        <article class="huis">
+            <div class="huis-photo">
+                <span class="huis-badge">Stap 1</span>
+                <img src="images/showroom-luxury.png" alt="Onze luxe showroom in Veenendaal voor persoonlijk advies en inspiratie"/>
+            </div>
+            <div class="huis-content">
+                <h3>Advies &amp; <em>inmeten</em></h3>
+                <span class="script">gratis bij offerte</span>
+                <div class="huis-specs">
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 21V11l8-6 8 6v10" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Showroombezoek
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Thuis inmeten
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Materiaaladvies
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12c4 0 4 4 9 4s5-4 9-4M3 6c4 0 4 4 9 4s5-4 9-4" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Offerte op maat
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="huis">
+            <div class="huis-photo">
+                <span class="huis-badge">Stap 2</span>
+                <img src="images/montage-luxury.png" alt="Vakman monteert met precisie een luxe stalen binnendeur"/>
+            </div>
+            <div class="huis-content">
+                <h3>Levering &amp; <em>montage</em></h3>
+                <span class="script">door eigen vakmannen</span>
+                <div class="huis-specs">
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 21V11l8-6 8 6v10" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Vakkundige plaatsing
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Binnen 4–6 weken
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="4" y="6" width="16" height="12" stroke="currentColor" stroke-width="1.6"/></svg>
+                        Oude deur verwijderen
+                    </div>
+                    <div class="huis-spec">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 12c4 0 4 4 9 4s5-4 9-4M3 6c4 0 4 4 9 4s5-4 9-4" stroke="currentColor" stroke-width="1.6"/></svg>
+                        2 jaar garantie
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <!-- Callout for contractors -->
+    <div class="bnb-callout">
+        <div class="bnb-callout-content">
+            <span class="mono-label">Voor professionals</span>
+            <h4>Ook voor <em>aannemers &amp; architecten</em></h4>
+            <p>Werk je aan een nieuwbouw- of renovatieproject? Wij leveren complete deurpakketten met vaste prijzen, strakke planning en een vast aanspreekpunt. Vraag naar onze projectvoorwaarden.</p>
+        </div>
+        <a href="#boeken">
+            <span>Projectofferte aanvragen</span>
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M0 5h11M8 1l4 4-4 4" stroke="currentColor" stroke-width="1.4"/></svg>
+        </a>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION 05 — DE LOCATIE -->
+<!-- ============================== -->
+<section class="locatie reveal" id="locatie">
+    <div class="chapter">
+        <div class="chapter-num">05</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 05</span>
+            <h2>Onze <em>showroom</em></h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <div class="locatie-layout">
+        <div class="locatie-text">
+            <p class="lead">
+                Bezoek onze showroom in Veenendaal en ontdek de volledige collectie binnendeuren. Voel materialen, vergelijk kleuren en bespreek je wensen met een adviseur.
+            </p>
+            <p>
+                We werken in heel Midden-Nederland en daarbuiten. Voor grotere projecten komen we graag langs voor een gratis inmeting. Parkeren is gratis voor de deur.
+            </p>
+            <div class="locatie-stats">
+                <div class="locatie-stat">
+                    <span class="num">200<small>+</small></span>
+                    <span class="desc"><strong>Deurmodellen</strong>Op voorraad en op bestelling. Van klassiek tot ultramodern.</span>
+                </div>
+                <div class="locatie-stat">
+                    <span class="num">25<small>jr</small></span>
+                    <span class="desc"><strong>Ervaring</strong>Al sinds 1998 specialist in binnendeuren en maatwerk.</span>
+                </div>
+                <div class="locatie-stat">
+                    <span class="num">48<small>u</small></span>
+                    <span class="desc"><strong>Offerte</strong>Gemiddelde reactietijd op offerteaanvragen via de website.</span>
+                </div>
+                <div class="locatie-stat">
+                    <span class="num">2<small>jr</small></span>
+                    <span class="desc"><strong>Garantie</strong>Op alle geleverde en geplaatste binnendeuren.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="locatie-map">
+            <div class="locatie-showroom-photo">
+                <img src="images/showroom-luxury.png" alt="Interieur van de DeurMeester showroom in Veenendaal met binnendeuren op display"/>
+            </div>
+            <div class="locatie-pins">
+                <div class="locatie-pin"><span class="dot copper"></span><strong>DeurMeester Showroom</strong>, Veenendaal NL</div>
+                <div class="locatie-pin"><span class="dot sage"></span><strong>Gratis parkeren</strong> direct voor de deur</div>
+                <div class="locatie-pin"><span class="dot stone"></span><strong>Op afspraak</strong> ma–za, ook 's avonds mogelijk</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outdoor activities -->
+    <div class="activities-outdoor">
+        <div class="activities-outdoor-text">
+            <span class="mono-label">Openingstijden</span>
+            <h4>Bezoek onze <em>showroom</em></h4>
+        </div>
+        <div class="activities-outdoor-list">
+            <div class="outdoor-item">
+                <strong>Maandag – vrijdag</strong>
+                09:00 – 17:30 uur. Advies op afspraak of walk-in.
+            </div>
+            <div class="outdoor-item">
+                <strong>Zaterdag</strong>
+                10:00 – 16:00 uur. Ideaal voor een rustig bezoek.
+            </div>
+            <div class="outdoor-item">
+                <strong>Avondafspraken</strong>
+                Op aanvraag ook na 18:00 beschikbaar.
+            </div>
+            <div class="outdoor-item">
+                <strong>Thuis inmeten</strong>
+                Gratis bij offertes vanaf 3 deuren.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- SECTION 06 — BOEKINGSMODULE -->
+<!-- ============================== -->
+<section class="booking-full reveal" id="boeken">
+    <div class="chapter">
+        <div class="chapter-num">06</div>
+        <div class="chapter-title">
+            <span class="mono-label">Hoofdstuk 06</span>
+            <h2>Stel je <em>deur</em> samen</h2>
+        </div>
+        <svg class="chapter-decor" viewBox="0 0 80 30" fill="none">
+            <path d="M0 15h80" stroke="currentColor" stroke-width="0.8"/>
+            <circle cx="40" cy="15" r="8" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <rect x="37" y="10" width="6" height="10" rx="0.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+            <circle cx="41.5" cy="15" r="0.4" fill="currentColor"/>
+        </svg>
+    </div>
+
+    <p style="text-align:center;max-width:560px;margin:0 auto 2rem;color:rgba(250,248,245,0.85);font-size:15px">Doorloop alle stappen en ontvang binnen 48 uur een vrijblijvende offerte op maat.</p>
+
+    <div data-il-element="booking">
+        <div class="booking-card">
+            <div class="booking-progress">
+                <div class="booking-step active" data-step="1"><span class="step-num">1</span><span>Deurtype</span></div>
+                <div class="booking-step" data-step="2"><span class="step-num">2</span><span>Materiaal</span></div>
+                <div class="booking-step" data-step="3"><span class="step-num">3</span><span>Afmetingen</span></div>
+                <div class="booking-step" data-step="4"><span class="step-num">4</span><span>Afwerking</span></div>
+                <div class="booking-step" data-step="5"><span class="step-num">5</span><span>Montage</span></div>
+                <div class="booking-step" data-step="6"><span class="step-num">6</span><span>Contact</span></div>
+            </div>
+            <div class="config-live-summary"><strong>Jouw configuratie</strong><span class="config-summary-text">Stel je deur samen — je keuzes verschijnen hier live.</span></div>
+            <div class="booking-body">
+                <div class="booking-pane active" data-pane="1">
+                    <h3>Welk <em>deurtype</em>?</h3><p>Kies het type dat past bij jouw doorgang en interieur.</p>
+                    <div class="type-options">
+                        <label class="type-option selected" data-type="Taatsdeur"><h4>Taatsdeur</h4><p>Elegant en ruimtelijk, ideaal voor brede doorgangen.</p></label>
+                        <label class="type-option" data-type="Schuifdeur"><h4>Schuifdeur</h4><p>In of voor de wand — geen draairuimte nodig.</p></label>
+                        <label class="type-option" data-type="Opdekdeur"><h4>Opdekdeur</h4><p>Klassiek en veelzijdig, de meest gekozen oplossing.</p></label>
+                        <label class="type-option" data-type="Vouwwand"><h4>Vouwwand</h4><p>Flexibele scheiding tussen ruimtes.</p></label>
+                        <label class="type-option" data-type="Stompdeur"><h4>Stompdeur</h4><p>Vlak in het kozijn, strak en modern.</p></label>
+                        <label class="type-option" data-type="Glasdeur"><h4>Glasdeur</h4><p>Licht en transparant, met of zonder profiel.</p></label>
+                    </div>
+                    <div class="booking-actions"><button type="button" class="btn-prev" disabled>← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                </div>
+                <div class="booking-pane" data-pane="2">
+                    <h3>Welk <em>materiaal</em>?</h3><p>Materialen van topkwaliteit, afgestemd op gebruik en budget.</p>
+                    <div class="form-row"><div class="form-field"><label>Materiaal</label><select class="bw-materiaal"><option value="">Kies materiaal…</option><option>Massief hout</option><option>Fineer</option><option>Gelakt MDF</option><option>Glas</option><option>Combinatie hout/glas</option></select></div></div>
+                    <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                </div>
+                <div class="booking-pane" data-pane="3">
+                    <h3>Welke <em>afmetingen</em>?</h3><p>Kies een standaardmaat of vul maatwerk in (breedte × hoogte in cm).</p>
+                    <div class="form-row"><div class="form-field"><label>Standaardmaat</label><select class="bw-standaard"><option value="">Kies standaardmaat…</option><option>631 × 2015 mm</option><option>780 × 2015 mm</option><option>830 × 2115 mm</option><option>930 × 2115 mm</option><option>Maatwerk (op maat)</option></select></div></div>
+                    <div class="form-row"><div class="form-field"><label>Breedte (cm)</label><input type="number" class="bw-breedte" placeholder="bijv. 83" min="40" max="200"/></div><div class="form-field"><label>Hoogte (cm)</label><input type="number" class="bw-hoogte" placeholder="bijv. 211" min="180" max="280"/></div></div>
+                    <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                </div>
+                <div class="booking-pane" data-pane="4">
+                    <h3>Afwerking &amp; <em>kleur</em></h3><p>Van naturel hout tot strak gelakt — of een eigen RAL-kleur.</p>
+                    <div class="form-row"><div class="form-field"><label>Afwerking / kleur</label><select class="bw-afwerking"><option value="">Kies afwerking…</option><option>Wit gelakt</option><option>Eiken</option><option>Walnoot</option><option>Zwart</option><option>Custom RAL</option></select></div><div class="form-field bw-ral-wrap" hidden><label>RAL-nummer</label><input type="text" class="bw-ral" placeholder="bijv. 9010"/></div></div>
+                    <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                </div>
+                <div class="booking-pane" data-pane="5">
+                    <h3><em>Montage</em></h3><p>Alleen levering of volledig ontzorgd inclusief plaatsing door onze vakmannen.</p>
+                    <div class="montage-options">
+                        <label class="montage-option"><input type="radio" value="Alleen levering"/><strong>Alleen levering</strong><small>Je regelt zelf de montage</small></label>
+                        <label class="montage-option"><input type="radio" value="Inclusief montage" checked/><strong>Inclusief montage</strong><small>Plaatsing en afstelling door DeurMeester</small></label>
+                    </div>
+                    <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next">Volgende</button></div>
+                </div>
+                <div class="booking-pane" data-pane="6">
+                    <h3>Contact &amp; <em>samenvatting</em></h3><p>Controleer je configuratie en laat je gegevens achter voor een vrijblijvende offerte.</p>
+                    <div class="summary"><h4>Jouw deur</h4>
+                        <div class="summary-row"><span>Deurtype</span><span class="sum-deurtype">—</span></div>
+                        <div class="summary-row"><span>Materiaal</span><span class="sum-materiaal">—</span></div>
+                        <div class="summary-row"><span>Afmetingen</span><span class="sum-afmetingen">—</span></div>
+                        <div class="summary-row"><span>Afwerking</span><span class="sum-afwerking">—</span></div>
+                        <div class="summary-row"><span>Montage</span><span class="sum-montage">—</span></div>
+                    </div>
+                    <div class="form-row"><div class="form-field"><label>Naam</label><input type="text" class="bw-name" placeholder="Voor- en achternaam"/></div><div class="form-field"><label>Organisatie (optioneel)</label><input type="text" class="bw-org"/></div></div>
+                    <div class="form-row"><div class="form-field"><label>E-mail</label><input type="email" class="bw-email"/></div><div class="form-field"><label>Telefoon</label><input type="tel" class="bw-phone"/></div></div>
+                    <div class="form-field"><label>Toelichting (optioneel)</label><textarea class="bw-notes" rows="3" placeholder="Bijzonderheden, aantal deuren, gewenste planning…"></textarea></div>
+                    <div class="booking-actions"><button type="button" class="btn-prev">← Vorige</button><button type="button" class="btn-next bw-submit">Offerte aanvragen</button></div>
+                </div>
+                <div class="booking-pane" data-pane="7"><div class="booking-success"><div class="check">✓</div><h3>Configuratie <em>verstuurd</em></h3><p>Bedankt! We sturen binnen 48 uur een offerte op maat.</p></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================== -->
+<!-- FOOTER -->
+<!-- ============================== -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <img src="images/logo.png" alt="" class="footer-logo"/>
+            <h4>DeurMeester</h4>
+            <p>"De juiste deur maakt het verschil."</p>
+            <div class="footer-contact">
+                Veenendaal, Utrecht<br/>
+                <a href="tel:+31600000000">+31 (0)6 XX XX XX XX</a><br/>
+                <a href="mailto:info@deurmeester.nl">info@deurmeester.nl</a>
+            </div>
+        </div>
+        <div class="footer-col">
+            <strong>Collectie</strong>
+            <ul>
+                <li><a href="#ruimtes">Taatsdeuren</a></li>
+                <li><a href="#ruimtes">Schuifdeuren</a></li>
+                <li><a href="#faciliteiten">Materialen</a></li>
+                <li><a href="#verblijf">Montage</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <strong>Service</strong>
+            <ul>
+                <li><a href="#locatie">Showroom</a></li>
+                <li><a href="#verblijf">Thuis inmeten</a></li>
+                <li><a href="#boeken">Offerte aanvragen</a></li>
+                <li><a href="#faciliteiten">Garantie</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <strong>Informatie</strong>
+            <ul>
+                <li><a href="#boeken">Offerte</a></li>
+                <li><a href="#locatie">Routebeschrijving</a></li>
+                <li><a href="#">Algemene voorwaarden</a></li>
+                <li><a href="#">Privacy</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 DeurMeester · Veenendaal, NL</span>
+        <span>Vakmanschap in elke deuropening</span>
+    </div>
+</footer>
+
+<script>
+    // ====== Nav scroll behavior ======
+    const nav = document.getElementById('global-nav');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 60) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+    });
+
+    // ====== Scroll reveals ======
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) entry.target.classList.add('visible');
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // ====== Smooth scroll ======
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+
+</script>
+
+<!-- ============================== -->
+<!-- CONTENT LOADER + LIVE BUILDER -->
+<!-- ============================== -->
+<script src="/assets/site-nav.js"></script>
+<script src="/assets/site-config.js"></script>
+<script src="/assets/il-scan.js"></script>
+<script src="/assets/il-apply.js"></script>
+<script src="/assets/content-loader.js"></script>
+<link rel="stylesheet" href="/assets/booking-widget.css"/>
+<script src="/assets/booking-widget.js"></script>
+<script src="/assets/elements-init.js"></script>
+<script>
+    // Live builder alleen laden wanneer met ?edit=1 geopend (vanuit de admin).
+    (function () {
+        const params = new URLSearchParams(location.search);
+        if (params.get('edit') !== '1') return;
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = '/assets/builder.css';
+        document.head.appendChild(css);
+        const js = document.createElement('script');
+        js.src = '/assets/builder.js';
+        document.body.appendChild(js);
+    })();
+</script>
+
+</body>
+</html>
