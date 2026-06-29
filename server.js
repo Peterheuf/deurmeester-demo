@@ -32,7 +32,7 @@ const ROOT = /netlify[/\\]functions$/.test(__dirname)
 
 const app = express();
 const PORT = process.env.PORT || 4000;
-const IS_SERVERLESS = !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.NETLIFY;
+const IS_SERVERLESS = !!process.env.AWS_LAMBDA_FUNCTION_NAME || !!process.env.NETLIFY || !!process.env.VERCEL;
 let mediaIndexCache = null;
 let mediaIndexCacheAt = 0;
 const MEDIA_CACHE_TTL_MS = 60000;

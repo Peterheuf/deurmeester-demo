@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/admin", "destination": "/api" },
+    { "source": "/admin/(.*)", "destination": "/api" },
+    { "source": "/p/(.*)", "destination": "/api" },
+    { "source": "/f/(.*)", "destination": "/api" },
+    { "source": "/uploads/(.*)", "destination": "/api" }
+  ],
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 60,
+      "includeFiles": "data/**,lib/**,admin/**,theme/**,public/**,server.js"
+    }
+  }
+}
